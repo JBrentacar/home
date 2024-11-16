@@ -1,147 +1,92 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JBレンタカー石巻店 - 営業時間外返却手順</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        max-width: 700px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f7f7f7;
-        line-height: 1.6;
-    }
-    .logo {
-        width: 120px;
-        margin: 0 auto;
-        display: block;
-        padding-bottom: 20px;
-    }
-    h1 {
-        text-align: center;
-        color: #333;
-        font-size: 1.8em;
-        margin-bottom: 20px;
-    }
-    p {
-        font-size: 1.1em;
-        margin-bottom: 15px;
-    }
-    img {
-        width: 100%;
-        height: auto;
-        max-height: 300px;
-        object-fit: cover;
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-    .highlight {
-        color: blue;
-        text-decoration: underline;
-        cursor: pointer;
-    }
-    .address {
-        font-size: 1.1em;
-        margin-top: 20px;
-        text-align: center;
-    }
-    .map-link {
-        color: #007bff;
-        text-decoration: underline;
-    }
-    .footer-image {
-        width: 100%;
-        height: auto;
-        max-height: 400px;
-        object-fit: cover;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        margin-top: 30px;
-    }
-    .faq {
-        margin-top: 30px;
-    }
-    .faq h2 {
-        font-size: 1.5em;
-        color: #333;
-        margin-bottom: 10px;
-    }
-    .faq-item {
-        margin-bottom: 15px;
-    }
-    .note {
-        margin-top: 20px;
-        padding: 15px;
-        background-color: #f0f0f0;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-    }
-    .note p {
-        margin: 5px 0;
-    }
-</style>
-<script>
-    function showOilInfo() {
-        alert("オイル交換が必要な場合: 3ケ月以上ご利用、または 3000km 以上走行された場合です。");
-    }
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スタッドレスタイヤ脱着のご案内</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <img src="logo.png" alt="ロゴ" class="logo">
+    </header>
 
-<!-- ロゴ表示 -->
-<img src="logo.png" alt="JBレンタカーロゴ" class="logo">
+    <main>
+        <h1>スタッドレスタイヤ着用について</h1>
+        <p>12月～3月末まではスタッドレスタイヤの着用が必須です。</p>
+        <p>30日利用の場合、6,600円（税込）<br>他の日数での料金はお問い合わせください。</p>
 
-<h1>JBレンタカー石巻店 <br>営業時間外返却手順</h1>
+        <h2>履き替えについて</h2>
+        <p>11月中に履き替えをお願いし、12月分からご請求します。</p>
 
-<p>① ガソリン満タン・<span class="highlight" onclick="showOilInfo()">オイル交換（該当する場合のみ）</span></p>
-<img src="gas.png" alt="ガソリン満タンとオイル交換の写真">
+        <h2>タイヤ交換場所</h2>
+        <address>
+            【タイヤ交換先情報】<br>
+            合同会社なないろ 担当：佐々木様<br>
+            住所：石巻市須江関ノ入39<br>
+            対応可能時間：平日・土曜10:00〜18:00
+        </address>
 
-<p>② 敷地内駐車場 №5, 7, 9 のいずれかに駐車</p>
-<img src="PARK.png" alt="駐車場の写真">
-<p>※ 他の駐車場には絶対に駐車しないでください。</p>
+        <h2>タイヤ交換日程のご申請</h2>
+        <p><a href="https://forms.wix.com/r/7255430324417463202" target="_blank">こちらから申請してください</a></p>
 
-<p>③ 建物内 1 階 JBレンタカー専用ポストに鍵を投函</p>
-<img src="KEY.png" alt="専用ポストの写真">
-
-<h2 class="address">返却先住所</h2>
-<p>〒986-0814<br>
-宮城県石巻市南中里 2-9-27 タイムヒルズ<br>
-<a href="https://maps.app.goo.gl/GA3wW2kHWUhcdNnq9" class="map-link" target="_blank">Google マップで確認</a><br>
-センチュリー21と同じ建物です。</p>
-
-<!-- よくあるご質問 (FAQ) -->
-<div class="faq">
-    <h2>よくあるご質問</h2>
-
-    <div class="faq-item">
-        <strong>Q: 何時までに返却すればよいですか？</strong>
-        <p>A: ご契約満了日の 23:59 までに返却をお願いいたします。</p>
-    </div>
-
-    <div class="faq-item">
-        <strong>Q: 給油レシートは確認は不要ですか？</strong>
-        <p>A: はい、翌営業日にメーターを確認させていただきます。</p>
-    </div>
-
-    <div class="faq-item">
-        <strong>Q: 超過距離分の精算方法は？</strong>
-        <p>A: 翌営業日にメーターを確認し、お振り込みにてご案内いたします。</p>
-    </div>
-</div>
-
-<!-- 注意事項 -->
-<div class="note">
-    <h2>ご注意事項</h2>
-    <p>◉ ご契約満了日以前のご返却による返金はできませんので、ご了承ください。</p>
-    <p>◉ お忘れ物にはご注意ください。特にグローブボックス内や ETC カードなどにご注意ください。</p>
-    <p>◉ 貸出時の走行距離が不明な場合は、事前にご連絡ください。</p>
-</div>
-
-<!-- 最下部の建物外観写真枠 -->
-<h2 class="address">建物外観写真</h2>
-<img src="building.png" alt="建物外観写真" class="footer-image">
-
+        <h2>4月以降のご利用について</h2>
+        <p>4月以降もご利用を継続される場合、ノーマルタイヤ装着車両でのご利用が可能です。ただし、近日中に車検満了を迎えるため、車両の入替が必要となります。</p>
+        <p>4月1日から4月14日までは移行期間とし、この期間中はスタッドレスタイヤ装着料は発生しません。4月15日以降も現在の車両でのご利用を継続される場合は、移行期間分を含むスタッドレスタイヤ利用料金が発生いたしますので、あらかじめご注意ください。</p>
+    </main>
 </body>
 </html>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.logo {
+    width: 150px;
+}
+
+main {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 1.5em;
+    color: #333;
+}
+
+h2 {
+    font-size: 1.2em;
+    color: #555;
+}
+
+p {
+    line-height: 1.6;
+    color: #666;
+}
+
+address {
+    font-style: normal;
+    color: #444;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
