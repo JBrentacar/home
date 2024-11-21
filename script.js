@@ -293,7 +293,9 @@ function calculate() {
     const baseRate = rateTable[carClass][days - 1] || 0;
 
     // オプション料金計算
-    const tiresCost = tires ? rateTable.WINTER_TIRES[days - 1] || 0 : 0;
+  const insuranceCost = insurance ? rateTable.INS_WAIVER[days - 1] || 0 : 0;
+const waiverCost = waiver ? rateTable.INS_WAIVER[days - 1] || 0 : 0;  
+  const tiresCost = tires ? rateTable.WINTER_TIRES[days - 1] || 0 : 0;
     const etcCost = etc ? rateTable.ETC_NAV[days - 1] || 0 : 0;
     const gpsCost = gps ? rateTable.ETC_NAV[days - 1] || 0 : 0;
 
