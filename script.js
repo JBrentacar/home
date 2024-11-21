@@ -378,11 +378,5 @@ function calculatePaymentDeadline(endDate) {
     localStorage.setItem("lastCalculation", JSON.stringify(data));
 }
 
-// ローカルストレージから読み込み
-window.onload = function() {
-    const savedData = localStorage.getItem("lastCalculation");
-    if (savedData) {
-        const parsedData = JSON.parse(savedData);
-        alert(`前回の計算結果: 合計 ¥${parsedData.total.toLocaleString()} 契約満了日 ${parsedData.endDate}`);
-    }
+
 };
