@@ -274,11 +274,10 @@
         75000 ]
 };
 
-// 計算処理
 function calculate() {
     const startDate = document.getElementById("startDate").value;
-    const days = parseInt(document.getElementById("days").value);
-    const carClass = document.getElementById("carClass").value;
+    const days = parseInt(document.getElementById("days").value); // 選択した日数
+    const carClass = document.getElementById("carClass").value; // 車両クラス（別途ドロップダウンで用意）
     const insurance = document.getElementById("insurance").checked;
     const waiver = document.getElementById("waiver").checked;
     const tires = document.getElementById("tires").checked;
@@ -290,16 +289,15 @@ function calculate() {
         return;
     }
 
-    // 基本料金計算
-const baseRate = rateTable[carClass][days - 1] || 0;
+    // 基本料金計算（配列のインデックスは days - 1 で調整）
+    const baseRate = rateTable[carClass][days - 1] || 0;
 
-// オプション料金計算
-const insuranceCost = insurance ? rateTable.INS_WAIVER[days - 1] || 0 : 0;
-const waiverCost = waiver ? rateTable.INS_WAIVER[days - 1] || 0 : 0;
-const tiresCost = tires ? rateTable.WINTER_TIRES[days - 1] || 0 : 0;
-const etcCost = etc ? rateTable.ETC_NAV[days - 1] || 0 : 0;
-const gpsCost = gps ? rateTable.ETC_NAV[days - 1] || 0 : 0;
-
+    // オプション料金計算
+    const insuranceCost = insurance ? rateTable.INS_WAIVER[days - 1] || 0 : 0;
+    const waiverCost = waiver ? rateTable.INS_WAIVER[days - 1] || 0 : 0;
+    const tiresCost = tires ? rateTable.WINTER_TIRES[days - 1] || 0 : 0;
+    const etcCost = etc ? rateTable.ETC_NAV[days - 1] || 0 : 0;
+    const gpsCost = gps ? rateTable.ETC_NAV[days - 1] || 0 : 0;
 
     // 合計料金計算
     const subtotal = baseRate + insuranceCost + waiverCost + tiresCost + etcCost + gpsCost;
@@ -308,7 +306,7 @@ const gpsCost = gps ? rateTable.ETC_NAV[days - 1] || 0 : 0;
 
     // 契約満了日計算
     const endDate = new Date(startDate);
-    endDate.setDate(endDate.getDate() + days);
+    endDate.setDate(endDate.getDate() + days - 1);
     const formattedEndDate = endDate.toISOString().split("T")[0];
 
     // 結果を表示
@@ -321,6 +319,8 @@ const gpsCost = gps ? rateTable.ETC_NAV[days - 1] || 0 : 0;
         <div>税込み合計: ¥${total.toLocaleString()}</div>
         <div>契約満了日: ${formattedEndDate}</div>
     `;
+}
+
 
     // ローカルストレージに保存
     const data = {
