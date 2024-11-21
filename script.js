@@ -361,22 +361,20 @@ function calculatePaymentDeadline(endDate) {
 
 
     // ローカルストレージに保存
-    const data = {
-        startDate,
-        days,
-        carClass,
-        insurance,
-        waiver,
-        tires,
-        etc,
-        gps,
-        subtotal,
-        tax,
-        total,
-        endDate: formattedEndDate
-    };
-    localStorage.setItem("lastCalculation", JSON.stringify(data));
-}
-
+const data = {
+    startDate,
+    days,
+    carClass,
+    insurance,
+    waiver,
+    tires,
+    etc,
+    gps,
+    subtotal,
+    tax,
+    total,
+    endDate: formattedEndDate
+};
+localStorage.setItem("lastCalculation", JSON.stringify(data));
 
 };
