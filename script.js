@@ -276,8 +276,10 @@
 
 function calculate() {
     const startDate = document.getElementById("startDate").value;
-    const days = parseInt(document.getElementById("days").value); // 選択した日数
-    const carClass = document.getElementById("carClass").value; // 車両クラス
+    const days = parseInt(document.getElementById("days").value);
+    const carClass = document.getElementById("carClass").value;
+    const insurance = document.getElementById("insurance").checked;
+    const waiver = document.getElementById("waiver").checked;
     const tires = document.getElementById("tires").checked;
     const etc = document.getElementById("etc").checked;
     const gps = document.getElementById("gps").checked;
@@ -300,25 +302,60 @@ function calculate() {
     const tax = Math.round(subtotal * 0.1);
     const total = subtotal + tax;
 
-    // 契約満了日計算
+     // 契約満了日計算
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + days - 1);
     const formattedEndDate = endDate.toISOString().split("T")[0];
+
+    // 振込期限計算
+    const paymentDeadline = calculatePaymentDeadline(formattedEndDate);
 
     // 結果を表示
     const resultDiv = document.getElementById("result");
     resultDiv.innerHTML = `
         <div>基本料金: ¥${baseRate.toLocaleString()}</div>
-        <div>スタッドレスタイヤ料金: ¥${tiresCost.toLocaleString()}</div>
-        <div>ETC料金: ¥${etcCost.toLocaleString()}</div>
-        <div>ナビ料金: ¥${gpsCost.toLocaleString()}</div>
+        <div>オプション料金: ¥${(insuranceCost + waiverCost + tiresCost + etcCost + gpsCost).toLocaleString()}</div>
         <div>小計: ¥${subtotal.toLocaleString()}</div>
         <div>税金 (10%): ¥${tax.toLocaleString()}</div>
         <div>税込み合計: ¥${total.toLocaleString()}</div>
         <div>契約満了日: ${formattedEndDate}</div>
+        <div>振込期限: ${paymentDeadline}</div>
     `;
 }
 
+// 振込期限計算関数（追記部分）
+function calculatePaymentDeadline(endDate) {
+    const holidays = [
+        // 2024年の祝日
+        "2024-01-01", "2024-01-08", "2024-02-11", "2024-02-12", "2024-03-20",
+        "2024-04-29", "2024-05-03", "2024-05-04", "2024-05-05", "2024-05-06",
+        "2024-07-15", "2024-08-11", "2024-08-12", "2024-09-16", "2024-09-23",
+        "2024-10-14", "2024-11-03", "2024-11-04", "2024-11-23",
+        // 2025年の祝日
+        "2025-01-01", "2025-01-13", "2025-02-11", "2025-03-20",
+        "2025-04-29", "2025-05-03", "2025-05-04", "2025-05-05", "2025-05-06",
+        "2025-07-21", "2025-08-11", "2025-09-15", "2025-09-23", "2025-10-13",
+        "2025-11-03", "2025-11-23", "2025-11-24"
+    ];
+
+    let paymentDeadline = new Date(endDate);
+    paymentDeadline.setDate(paymentDeadline.getDate() - 1);
+
+    // 年末年始特別ルール
+    const endMonth = paymentDeadline.getMonth() + 1;
+    const endDay = paymentDeadline.getDate();
+
+    if ((endMonth === 12 && endDay >= 29) || (endMonth === 1 && endDay <= 4)) {
+        paymentDeadline = new Date(`${paymentDeadline.getFullYear()}-12-27`);
+    }
+
+    // 土日・祝日の処理
+    while (paymentDeadline.getDay() === 0 || paymentDeadline.getDay() === 6 || holidays.includes(paymentDeadline.toISOString().split("T")[0])) {
+        paymentDeadline.setDate(paymentDeadline.getDate() - 1);
+    }
+
+    return paymentDeadline.toISOString().split("T")[0];
+}
 
 
     // ローカルストレージに保存
