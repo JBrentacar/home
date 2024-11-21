@@ -13,8 +13,8 @@
             <input type="date" id="startDate" required>
         </div>
         <div>
-            <label for="days">利用日数:</label>
-            <input type="number" id="days" min="1" max="365" required>
+            <label for="days">日数:</label>
+<input type="number" id="days" min="7" max="365" value="1" step="1" style="width: 60px;"> <!-- スピナー形式 -->
         </div>
         <div>
             <label for="carClass">車両クラス:</label>
@@ -41,7 +41,8 @@
         <div>
             <label><input type="checkbox" id="gps"> カーナビ</label>
         </div>
-        <button type="submit">計算する</button>
+    <button onclick="calculate()">計算する</button>
+<div id="result"></div>
     </form>
 
     <div id="result"></div>
