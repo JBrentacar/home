@@ -46,22 +46,41 @@ function calculate() {
         return;
     }
 
-    // 基本料金計算（配列のインデックスは days - 1 で調整）
-    const baseRate = rateTable[carClass][days - 1] || 0;
+    // 基本料金計算
+    let totalBaseRate = 0;
+    let remainingDays = days;
+    const maxDaysPerRate = 30;
+
+    while (remainingDays > 0) {
+        const daysToCalculate = Math.min(remainingDays, maxDaysPerRate);
+        totalBaseRate += rateTable[carClass][daysToCalculate - 1] || 0;
+        remainingDays -= daysToCalculate;
+    }
 
     // オプション料金計算
-  const insuranceCost = insurance ? rateTable.INS_WAIVER[days - 1] || 0 : 0;
-const waiverCost = waiver ? rateTable.INS_WAIVER[days - 1] || 0 : 0;  
-  const tiresCost = tires ? rateTable.WINTER_TIRES[days - 1] || 0 : 0;
-    const etcCost = etc ? rateTable.ETC_NAV[days - 1] || 0 : 0;
-    const gpsCost = gps ? rateTable.ETC_NAV[days - 1] || 0 : 0;
+    let totalInsuranceCost = 0;
+    let totalWaiverCost = 0;
+    let totalTiresCost = 0;
+    let totalEtcCost = 0;
+    let totalGpsCost = 0;
+    remainingDays = days;
+
+    while (remainingDays > 0) {
+        const daysToCalculate = Math.min(remainingDays, maxDaysPerRate);
+        totalInsuranceCost += insurance ? (rateTable.INS_WAIVER[daysToCalculate - 1] || 0) : 0;
+        totalWaiverCost += waiver ? (rateTable.INS_WAIVER[daysToCalculate - 1] || 0) : 0;
+        totalTiresCost += tires ? (rateTable.WINTER_TIRES[daysToCalculate - 1] || 0) : 0;
+        totalEtcCost += etc ? (rateTable.ETC_NAV[daysToCalculate - 1] || 0) : 0;
+        totalGpsCost += gps ? (rateTable.ETC_NAV[daysToCalculate - 1] || 0) : 0;
+        remainingDays -= daysToCalculate;
+    }
 
     // 合計料金計算
-    const subtotal = baseRate + tiresCost + etcCost + gpsCost;
+    const subtotal = totalBaseRate + totalInsuranceCost + totalWaiverCost + totalTiresCost + totalEtcCost + totalGpsCost;
     const tax = Math.round(subtotal * 0.1);
     const total = subtotal + tax;
 
-     // 契約満了日計算
+    // 契約満了日計算
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + days - 1);
     const formattedEndDate = endDate.toISOString().split("T")[0];
@@ -72,14 +91,15 @@ const waiverCost = waiver ? rateTable.INS_WAIVER[days - 1] || 0 : 0;
     // 結果を表示
     const resultDiv = document.getElementById("result");
     resultDiv.innerHTML = `
-        <div>基本料金: ¥${baseRate.toLocaleString()}</div>
-        <div>オプション料金: ¥${(insuranceCost + waiverCost + tiresCost + etcCost + gpsCost).toLocaleString()}</div>
+        <div>基本料金: ¥${totalBaseRate.toLocaleString()}</div>
+        <div>オプション料金: ¥${(totalInsuranceCost + totalWaiverCost + totalTiresCost + totalEtcCost + totalGpsCost).toLocaleString()}</div>
         <div>小計: ¥${subtotal.toLocaleString()}</div>
         <div>税金 (10%): ¥${tax.toLocaleString()}</div>
         <div>税込み合計: ¥${total.toLocaleString()}</div>
         <div>契約満了日: ${formattedEndDate}</div>
         <div>振込期限: ${paymentDeadline}</div>
     `;
+
 }
 
 // 振込期限計算関数（追記部分）
