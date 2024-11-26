@@ -45,6 +45,37 @@
     </form>
     <div id="result"></div>
 
-    <script src="script.js"></script>
+    <script>
+        const rateTable = {
+            "J-1": [1980, 3960, 5940, 7700, 7700, 7700, 7700, 9680, 11660, 13640, 15400, 15400, 15400, 15400, 17380, 19360, 21340, 23100, 23100, 23100, 23100, 23940, 23940, 23940, 23940, 23940, 23940, 23940, 23940, 23940],
+            "J-2": [2480, 4960, 7440, 9600, 9600, 9600, 9600, 12080, 14560, 17040, 19200, 19200, 19200, 19200, 21680, 24160, 26640, 28800, 28800, 28800, 28800, 29580, 29580, 29580, 29580, 29580, 29580, 29580, 29580, 29580],
+            "J-3": [3180, 6360, 9540, 12720, 13400, 13400, 13400, 16580, 19760, 22940, 26120, 26800, 26800, 26800, 29980, 33160, 36340, 39500, 39500, 39500, 39500, 39500, 39500, 39500, 39500, 39500, 39500, 39500, 39500, 39500],
+            "J-4": [3380, 6760, 10140, 13520, 16900, 17480, 17480, 20860, 24240, 27620, 31000, 34380, 34960, 34960, 38340, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800],
+        };
+
+        function calculate() {
+            const startDate = document.getElementById("startDate").value;
+            const days = parseInt(document.getElementById("days").value);
+            const carClass = document.getElementById("carClass").value;
+
+            if (!startDate || isNaN(days) || !carClass) {
+                alert("すべての必須項目を入力してください");
+                return;
+            }
+
+            let totalBaseRate = 0;
+            let remainingDays = days;
+            const maxDaysPerRate = 30;
+
+            while (remainingDays > 0) {
+                const daysToCalculate = Math.min(remainingDays, maxDaysPerRate);
+                totalBaseRate += rateTable[carClass][daysToCalculate - 1] || 0;
+                remainingDays -= daysToCalculate;
+            }
+
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = `<div>基本料金: ¥${totalBaseRate.toLocaleString()}</div>`;
+        }
+    </script>
 </body>
 </html>
