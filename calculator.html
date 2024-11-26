@@ -51,12 +51,20 @@
             "J-2": [2480, 4960, 7440, 9600, 9600, 9600, 9600, 12080, 14560, 17040, 19200, 19200, 19200, 19200, 21680, 24160, 26640, 28800, 28800, 28800, 28800, 29580, 29580, 29580, 29580, 29580, 29580, 29580, 29580, 29580],
             "J-3": [3180, 6360, 9540, 12720, 13400, 13400, 13400, 16580, 19760, 22940, 26120, 26800, 26800, 26800, 29980, 33160, 36340, 39500, 39500, 39500, 39500, 39500, 39500, 39500, 39500, 39500, 39500, 39500, 39500, 39500],
             "J-4": [3380, 6760, 10140, 13520, 16900, 17480, 17480, 20860, 24240, 27620, 31000, 34380, 34960, 34960, 38340, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800, 39800],
+            "ETC_NAV": [500, 1000, 1000, 1000, 1000, 1000, 1000, 1500, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000],
+            "INS_WAIVER": [1000, 2000, 2000, 2000, 2000, 2000, 2000, 3000, 4000, 4000, 4000, 4000, 4000, 4000, 5000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000],
+            "WINTER_TIRES": [1000, 2000, 3000, 3000, 3000, 3000, 3000, 4000, 5000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000]
         };
 
         function calculate() {
             const startDate = document.getElementById("startDate").value;
             const days = parseInt(document.getElementById("days").value);
             const carClass = document.getElementById("carClass").value;
+            const insurance = document.getElementById("insurance").checked;
+            const waiver = document.getElementById("waiver").checked;
+            const tires = document.getElementById("tires").checked;
+            const etc = document.getElementById("etc").checked;
+            const gps = document.getElementById("gps").checked;
 
             if (!startDate || isNaN(days) || !carClass) {
                 alert("すべての必須項目を入力してください");
@@ -64,17 +72,37 @@
             }
 
             let totalBaseRate = 0;
+            let totalInsuranceCost = 0;
+            let totalWaiverCost = 0;
+            let totalTiresCost = 0;
+            let totalEtcCost = 0;
+            let totalGpsCost = 0;
             let remainingDays = days;
             const maxDaysPerRate = 30;
 
             while (remainingDays > 0) {
                 const daysToCalculate = Math.min(remainingDays, maxDaysPerRate);
                 totalBaseRate += rateTable[carClass][daysToCalculate - 1] || 0;
+                totalInsuranceCost += insurance ? (rateTable.INS_WAIVER[daysToCalculate - 1] || 0) : 0;
+                totalWaiverCost += waiver ? (rateTable.INS_WAIVER[daysToCalculate - 1] || 0) : 0;
+                totalTiresCost += tires ? (rateTable.WINTER_TIRES[daysToCalculate - 1] || 0) : 0;
+                totalEtcCost += etc ? (rateTable.ETC_NAV[daysToCalculate - 1] || 0) : 0;
+                totalGpsCost += gps ? (rateTable.ETC_NAV[daysToCalculate - 1] || 0) : 0;
                 remainingDays -= daysToCalculate;
             }
 
+            const subtotal = totalBaseRate + totalInsuranceCost + totalWaiverCost + totalTiresCost + totalEtcCost + totalGpsCost;
+            const tax = Math.round(subtotal * 0.1);
+            const total = subtotal + tax;
+
             const resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = `<div>基本料金: ¥${totalBaseRate.toLocaleString()}</div>`;
+            resultDiv.innerHTML = `
+                <div>基本料金: ¥${totalBaseRate.toLocaleString()}</div>
+                <div>オプション料金: ¥${(totalInsuranceCost + totalWaiverCost + totalTiresCost + totalEtcCost + totalGpsCost).toLocaleString()}</div>
+                <div>小計: ¥${subtotal.toLocaleString()}</div>
+                <div>税金 (10%): ¥${tax.toLocaleString()}</div>
+                <div>税込み合計: ¥${total.toLocaleString()}</div>
+            `;
         }
     </script>
 </body>
