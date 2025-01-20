@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JBレンタカー石巻店 走行距離チェッカー</title>
+    <style>
+        /* CSS スタイル */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="date"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 5px;
+        }
+
+        .result p {
+            margin: 5px 0;
+        }
+
+        /* レスポンシブデザイン */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JBレンタカー石巻店 走行距離チェッカー</h1>
+        <form id="mileageForm">
+            <div class="form-group">
+                <label for="startDate">貸渡開始日 (YYYY-MM-DD):</label>
+                <input type="date" id="startDate" required>
+            </div>
+            <div class="form-group">
+                <label for="endDate">貸渡終了日 (YYYY-MM-DD):</label>
+                <input type="date" id="endDate" required>
+            </div>
+            <div class="form-group">
+                <label for="startKm">貸出時走行距離（㎞）:</label>
+                <input type="number" id="startKm" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="endKm">返却時走行距離（㎞）:</label>
+                <input type="number" id="endKm" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="vehicleType">車種:</label>
+                <select id="vehicleType" required>
+                    <option value="">選択してください</option>
+                    <option value="軽自動車">軽自動車</option>
+                    <option value="普通自動車">普通自動車</option>
+                </select>
+            </div>
+            <button type="submit">判定する</button>
+        </form>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        // JavaScript ロジック
+        document.getElementById('mileageForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // 入力値の取得
+            const startDate = new Date(document.getElementById('startDate').value);
+            const endDate = new Date(document.getElementById('endDate').value);
+            const startKm = parseInt(document.getElementById('startKm').value, 10);
+            const endKm = parseInt(document.getElementById('endKm').value, 10);
+            const vehicleType = document.getElementById('vehicleType').value;
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = ''; // 結果表示エリアをクリア
+
+            // 入力検証
+            if (isNaN(startKm) || isNaN(endKm)) {
+                resultDiv.innerHTML = '<p style="color:red;">走行距離は数値で入力してください。</p>';
+                return;
+            }
+
+            if (endDate < startDate) {
+                resultDiv.innerHTML = '<p style="color:red;">終了日は開始日以降の日付を入力してください。</p>';
+                return;
+            }
+
+            if (endKm < startKm) {
+                resultDiv.innerHTML = '<p style="color:red;">返却時の走行距離は貸出時の走行距離以上でなければなりません。</p>';
+                return;
+            }
+
+            if (!vehicleType) {
+                resultDiv.innerHTML = '<p style="color:red;">車種を選択してください。</p>';
+                return;
+            }
+
+            // レンタル期間の計算（両日を含む）
+            const timeDiff = endDate - startDate;
+            const rentalDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
+
+            // 走行距離の計算
+            const drivenKm = endKm - startKm;
+
+            // 走行上限の計算
+            function calculateAllowedKm(days) {
+                if (days <= 1) {
+                    return 300;
+                } else if (days <= 7) {
+                    return 1000;
+                } else if (days <= 30) {
+                    return 3000;
+                } else {
+                    const months = Math.floor(days / 30);
+                    return 3000 * (months + 1);
+                }
+            }
+
+            const allowedKm = calculateAllowedKm(rentalDays);
+            const overKm = drivenKm - allowedKm;
+            const extraFee = overKm > 0 ? overKm * 10 : 0;
+
+            // エンジンオイル交換の判定
+            const oilChangeNeeded = rentalDays > 90 || drivenKm >= 3000;
+
+            // 結果の表示
+            let resultHTML = `
+                <p><strong>レンタル期間:</strong> ${rentalDays} 日</p>
+                <p><strong>走行距離:</strong> ${drivenKm} ㎞</p>
+                <p><strong>走行上限:</strong> ${allowedKm} ㎞</p>
+            `;
+
+            if (overKm > 0) {
+                resultHTML += `
+                    <p style="color:orange;"><strong>走行上限を超過しています。</strong></p>
+                    <p><strong>追加請求額:</strong> ${extraFee} 円</p>
+                `;
+            } else {
+                resultHTML += `<p style="color:green;"><strong>走行距離の超過はありません。</strong></p>`;
+            }
+
+            if (oilChangeNeeded) {
+                resultHTML += `
+                    <p style="color:red; margin-top:15px;"><strong>エンジンオイル交換が必要です。</strong></p>
+                    <p>未交換での返却の場合、以下の料金が発生します。</p>
+                    <ul>
+                        <li>■軽自動車: 4,000円</li>
+                        <li>■普通自動車: 6,000円</li>
+                    </ul>
+                `;
+            } else {
+                resultHTML += `<p style="color:green; margin-top:15px;"><strong>エンジンオイル交換は不要です。</strong></p>`;
+            }
+
+            resultDiv.innerHTML = resultHTML;
+        });
+    </script>
+</body>
+</html>
