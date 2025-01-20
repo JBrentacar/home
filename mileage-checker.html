@@ -169,16 +169,55 @@
 
             // 走行上限の計算
             function calculateAllowedKm(days) {
-                if (days <= 1) {
-                    return 300;
-                } else if (days <= 7) {
-                    return 1000;
-                } else if (days <= 30) {
-                    return 3000;
-                } else {
-                    const months = Math.floor(days / 30);
-                    return 3000 * (months + 1);
+                const allowedKmTable = {
+                    1: 300,
+                    2: 600,
+                    3: 900,
+                    4: 1000,
+                    5: 1000,
+                    6: 1000,
+                    7: 1000,
+                    8: 1300,
+                    9: 1600,
+                    10: 1900,
+                    11: 2000,
+                    12: 2000,
+                    13: 2000,
+                    14: 2000,
+                    15: 2300,
+                    16: 2600,
+                    17: 2900,
+                    18: 3000,
+                    19: 3000,
+                    20: 3000,
+                    21: 3000,
+                    22: 3000,
+                    23: 3000,
+                    24: 3000,
+                    25: 3000,
+                    26: 3000,
+                    27: 3000,
+                    28: 3000,
+                    29: 3000,
+                    30: 3000
+                };
+
+                if (days <= 0) return 0;
+
+                let totalAllowedKm = 0;
+                let remainingDays = days;
+
+                while (remainingDays > 0) {
+                    if (remainingDays >= 30) {
+                        totalAllowedKm += 3000;
+                        remainingDays -= 30;
+                    } else {
+                        totalAllowedKm += allowedKmTable[remainingDays] || allowedKmTable[30];
+                        remainingDays = 0;
+                    }
                 }
+
+                return totalAllowedKm;
             }
 
             const allowedKm = calculateAllowedKm(rentalDays);
