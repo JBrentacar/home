@@ -26,7 +26,7 @@
 
         h1 {
             text-align: center;
-            color: #2c7a7b; /* ダークシアン系の色に変更 */
+            color: #0068e9; /* 指定された青色に変更 */
             font-size: 1.8em;
             margin-bottom: 20px;
         }
@@ -56,7 +56,7 @@
         button {
             width: 100%;
             padding: 12px;
-            background: #2c7a7b; /* ダークシアン系の色 */
+            background: #ffc600; /* 指定された黄色に変更 */
             border: none;
             color: #ffffff;
             font-size: 1.1em;
@@ -66,7 +66,7 @@
         }
 
         button:hover {
-            background: #285e61; /* ホバー時に少し暗く */
+            background: #e6b800; /* ホバー時に少し暗い黄色に変更 */
             transform: translateY(-2px);
         }
 
@@ -75,7 +75,7 @@
             padding: 20px;
             background: #e0f7fa; /* 薄いシアン */
             border-radius: 5px;
-            border-left: 5px solid #2c7a7b; /* 左側に色付きのボーダー */
+            border-left: 5px solid #0068e9; /* 左側に指定された青色のボーダー */
         }
 
         .result p {
@@ -156,8 +156,8 @@
             e.preventDefault();
 
             // 入力値の取得
-            const startDate = new Date(document.getElementById('startDate').value);
-            const endDate = new Date(document.getElementById('endDate').value);
+            const startDateInput = document.getElementById('startDate').value;
+            const endDateInput = document.getElementById('endDate').value;
             const startKm = parseInt(document.getElementById('startKm').value, 10);
             const endKm = parseInt(document.getElementById('endKm').value, 10);
             const vehicleType = document.getElementById('vehicleType').value;
@@ -166,6 +166,14 @@
             resultDiv.innerHTML = ''; // 結果表示エリアをクリア
 
             // 入力検証
+            if (!startDateInput || !endDateInput) {
+                resultDiv.innerHTML = '<p class="error">開始日と終了日を選択してください。</p>';
+                return;
+            }
+
+            const startDate = new Date(startDateInput);
+            const endDate = new Date(endDateInput);
+
             if (isNaN(startKm) || isNaN(endKm)) {
                 resultDiv.innerHTML = '<p class="error">走行距離は数値で入力してください。</p>';
                 return;
@@ -273,7 +281,7 @@
             if (overKm > 0) {
                 resultHTML += `
                     <p style="color:orange;"><strong>走行上限を超過しています。</strong></p>
-                    <p><strong>追加請求額:</strong> ${extraFee} 円</p>
+                    <p><strong>追加請求額:</strong> ${extraFee.toLocaleString()} 円</p>
                 `;
             } else {
                 resultHTML += `<p style="color:green;"><strong>走行距離の超過はありません。</strong></p>`;
@@ -284,8 +292,8 @@
                     <p style="color:red; margin-top:15px;"><strong>エンジンオイル交換が必要です。</strong></p>
                     <p>未交換での返却の場合、以下の料金が発生します。</p>
                     <ul>
-                        <li>■軽自動車: 4,000円</li>
-                        <li>■普通自動車: 6,000円</li>
+                        <li>軽自動車: 4,000円</li>
+                        <li>普通自動車: 6,000円</li>
                     </ul>
                 `;
             } else {
