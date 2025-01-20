@@ -160,9 +160,14 @@
                 return;
             }
 
-            // レンタル期間の計算（両日を含む）
+            // レンタル期間の計算（1泊＝1日、開始日～終了日で終了日を含まない）
             const timeDiff = endDate - startDate;
-            const rentalDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
+            const rentalDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+            if (rentalDays <= 0) {
+                resultDiv.innerHTML = '<p style="color:red;">貸渡終了日は貸渡開始日より後の日付を入力してください。</p>';
+                return;
+            }
 
             // 走行距離の計算
             const drivenKm = endKm - startKm;
