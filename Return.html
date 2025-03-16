@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>レンタカー返却のご案内</title>
+  <style>
+    :root {
+      --primary-color: #2c5282;
+      --accent-color: #4299e1;
+      --light-accent: #ebf8ff;
+      --dark-text: #2d3748;
+      --light-text: #4a5568;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+      line-height: 1.7;
+      color: var(--dark-text);
+      background-color: #f7fafc;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+    }
+    
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 25px 30px;
+      text-align: center;
+    }
+    
+    .content {
+      padding: 30px;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    
+    h2 {
+      font-size: 1.3rem;
+      margin: 25px 0 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--accent-color);
+      color: var(--primary-color);
+    }
+    
+    p {
+      margin-bottom: 15px;
+    }
+    
+    ul, ol {
+      padding-left: 25px;
+      margin-bottom: 15px;
+    }
+    
+    li {
+      margin-bottom: 8px;
+    }
+    
+    li:last-child {
+      margin-bottom: 0;
+    }
+    
+    .sub-list {
+      margin-top: 5px;
+      margin-bottom: 0;
+    }
+    
+    .highlight {
+      font-weight: 600;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: var(--border-radius);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    
+    .address-box {
+      background-color: var(--light-accent);
+      border-left: 4px solid var(--accent-color);
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    
+    .notes-section {
+      background-color: #fffbeb;
+      border-left: 4px solid #f6ad55;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 4px;
+    }
+    
+    .notes-title {
+      color: #c05621;
+      border-bottom: 1px solid #f6ad55;
+      margin-bottom: 15px;
+    }
+    
+    @media (max-width: 600px) {
+      .content {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      h2 {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>レンタカー返却のご案内</h1>
+    </header>
+    
+    <div class="content">
+      <p>当社のレンタカーをご利用いただき、誠にありがとうございます。以下に返却時のご注意点をご案内いたします。</p>
+      
+      <h2>返却条件のご案内</h2>
+      <ul>
+        <li>
+          <span class="highlight">全てのお客様</span>
+          <ul class="sub-list">
+            <li>ガソリンを満タンにしてご返却ください</li>
+          </ul>
+        </li>
+        <li>
+          <span class="highlight">長期利用のお客様</span>（3ヶ月以上のご利用または3,000km以上走行された場合）
+          <ul class="sub-list">
+            <li>ガソリン満タンに加え、エンジンオイルの交換をお願いいたします</li>
+            <li>オイル交換の領収書をご返却時にお持ちください</li>
+          </ul>
+        </li>
+      </ul>
+      
+      <h2>返却場所</h2>
+      <div class="address-box">
+        <p><span class="highlight">住所：</span>石巻市南中里2-9-27-2F</p>
+        <p><span class="highlight">アクセス：</span>JR石巻駅から徒歩15分</p>
+      </div>
+      
+      <div class="notes-section">
+        <h2 class="notes-title">ご注意事項</h2>
+        <ol>
+          <li>営業時間：平日 9:00～18:00、土日 10:00～16:00（水曜・祝日は休業）</li>
+          <li>ご契約満了日より前にご返却された場合でも、返金はいたしかねますのでご了承ください</li>
+          <li>お忘れ物にご注意ください（グローブボックス内の物品、ETCカードなど）</li>
+          <li>お貸出時の走行距離が不明な場合は、事前にご連絡ください</li>
+        </ol>
+      </div>
+      
+      <p>ご不明な点がございましたら、お気軽にお問い合わせください。</p>
+    </div>
+  </div>
+</body>
+</html>
