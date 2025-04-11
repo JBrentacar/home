@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>レンタカー返却のご案内</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
     :root {
       --primary-color: #2c5282;
@@ -13,6 +14,10 @@
       --light-text: #4a5568;
       --border-radius: 8px;
       --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --success-color: #38a169;
+      --success-light: #f0fff4;
+      --warning-color: #dd6b20;
+      --warning-light: #fffaf0;
     }
     
     * {
@@ -94,6 +99,26 @@
       border-radius: var(--border-radius);
       margin-bottom: 20px;
       overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .card-header {
+      background-color: var(--light-accent);
+      padding: 12px 15px;
+      font-weight: 600;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .card-header i {
+      margin-right: 8px;
+      font-size: 1.1rem;
+    }
+    
+    .card-body {
+      padding: 15px;
     }
     
     .address-box {
@@ -102,6 +127,94 @@
       padding: 15px 20px;
       margin: 20px 0;
       border-radius: 4px;
+    }
+    
+    .map-container {
+      margin-top: 15px;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .map-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .map-link {
+      display: inline-flex;
+      align-items: center;
+      background-color: var(--accent-color);
+      color: white;
+      text-decoration: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+    }
+    
+    .map-link:hover {
+      background-color: var(--primary-color);
+    }
+    
+    .map-link i {
+      margin-right: 5px;
+    }
+    
+    .gas-stations {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    
+    .gas-station-card {
+      border: 1px solid #e2e8f0;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background-color: white;
+    }
+    
+    .gas-station-header {
+      background-color: var(--success-light);
+      color: var(--success-color);
+      padding: 10px 15px;
+      font-weight: 600;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+    }
+    
+    .gas-station-header i {
+      margin-right: 8px;
+    }
+    
+    .gas-station-body {
+      padding: 12px 15px;
+    }
+    
+    .gas-station-address {
+      font-size: 0.9rem;
+      color: var(--light-text);
+      margin-bottom: 8px;
+    }
+    
+    .gas-station-hours {
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .gas-station-hours i {
+      margin-right: 5px;
+      color: var(--light-text);
+    }
+    
+    .gas-station-link {
+      font-size: 0.85rem;
     }
     
     .notes-section {
@@ -118,6 +231,31 @@
       margin-bottom: 15px;
     }
     
+    footer {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 20px;
+    }
+    
+    .logo {
+      max-width: 120px;
+      margin-bottom: 10px;
+      height: auto;
+    }
+    
+    .footer-contact {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+    
+    .footer-contact span {
+      margin: 0 10px;
+    }
+    
     @media (max-width: 600px) {
       .content {
         padding: 20px;
@@ -129,6 +267,10 @@
       
       h2 {
         font-size: 1.2rem;
+      }
+      
+      .gas-stations {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -159,11 +301,59 @@
         </li>
       </ul>
       
+      <!-- 近隣ガソリンスタンド情報 -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-gas-pump"></i>近隣ガソリンスタンドのご案内
+        </div>
+        <div class="card-body">
+          <p>返却前のガソリン給油にご利用いただける近隣のガソリンスタンドです。</p>
+          
+          <div class="gas-stations">
+            <div class="gas-station-card">
+              <div class="gas-station-header">
+                <i class="fas fa-gas-pump"></i>apollostation 石巻バイパス東SS
+              </div>
+              <div class="gas-station-body">
+                <div class="gas-station-address">〒986-0815 宮城県石巻市中里１丁目３−８</div>
+                <div class="gas-station-hours"><i class="far fa-clock"></i>24時間営業</div>
+                <a href="https://maps.app.goo.gl/Bi27pmAtbA2Zhq6o6" target="_blank" class="map-link gas-station-link">
+                  <i class="fas fa-map-marker-alt"></i>マップで確認
+                </a>
+              </div>
+            </div>
+            
+            <div class="gas-station-card">
+              <div class="gas-station-header">
+                <i class="fas fa-gas-pump"></i>ENEOS Dr.Driveセルフ石巻中里店
+              </div>
+              <div class="gas-station-body">
+                <div class="gas-station-address">〒986-0814 宮城県石巻市南中里１丁目９−２２</div>
+                <div class="gas-station-hours"><i class="far fa-clock"></i>24時間営業</div>
+                <a href="https://maps.app.goo.gl/QsJGWvvRfSBX2aqXA" target="_blank" class="map-link gas-station-link">
+                  <i class="fas fa-map-marker-alt"></i>マップで確認
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <h2>返却場所</h2>
       <div class="address-box">
         <p><span class="highlight">住所：</span>石巻市南中里2-9-27-2F</p>
         <p><span class="highlight">アクセス：</span>JR石巻駅から徒歩15分</p>
+        <p><span class="highlight">建物：</span>タイムヒルズ（センチュリー21と同じ建物）</p>
+        
+        <!-- Google Map リンク -->
+        <a href="https://maps.app.goo.gl/GA3wW2kHWUhcdNnq9" target="_blank" class="map-link">
+          <i class="fas fa-map-marker-alt"></i>Googleマップで確認
+        </a>
+        
+
       </div>
+      
+
       
       <div class="notes-section">
         <h2 class="notes-title">ご注意事項</h2>
@@ -177,6 +367,13 @@
       
       <p>ご不明な点がございましたら、お気軽にお問い合わせください。</p>
     </div>
+    
+    <footer>
+      <p>© 2025 JBレンタカー石巻店</p>
+      <div class="footer-contact">
+        <span><i class="fas fa-phone"></i> 0120-204-625</span>
+      </div>
+    </footer>
   </div>
 </body>
 </html>
