@@ -14,7 +14,8 @@
     .form-group { margin-bottom: 16px; }
     label { display: block; margin-bottom: 8px; font-weight: bold; }
     input[type="checkbox"] { margin-right: 8px; }
-    canvas { border: 1px solid #ccc; border-radius: 4px; touch-action: none; }
+    /* レスポンシブ署名パッド */
+    #signature-pad { width: 100%; height: 200px; border: 1px solid #ccc; border-radius: 4px; touch-action: none; }
     button { background-color: #0068e9; color: #fff; border: none; padding: 12px 24px; font-size: 16px; border-radius: 4px; cursor: pointer; }
     button:hover:not(:disabled) { background-color: #0052b4; }
     button:disabled { background-color: #ccc; cursor: not-allowed; }
@@ -51,7 +52,7 @@
       </div>
       <div class="form-group">
         <label>署名 <span style="color:red">*</span></label>
-        <canvas id="signature-pad" width="800" height="200"></canvas>
+        <canvas id="signature-pad"></canvas>
         <button type="button" id="clear">クリア</button>
         <input type="hidden" name="署名" id="signature-data" required>
       </div>
@@ -62,6 +63,18 @@
     const canvas = document.getElementById('signature-pad');
     const ctx = canvas.getContext('2d');
     let drawing = false;
+
+    function resizeCanvas() {
+      const ratio = window.devicePixelRatio || 1;
+      const w = canvas.clientWidth * ratio;
+      const h = parseInt(getComputedStyle(canvas).height) * ratio;
+      canvas.width = w;
+      canvas.height = h;
+      ctx.scale(ratio, ratio);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
     canvas.addEventListener('pointerdown', (e) => {
       drawing = true;
@@ -85,11 +98,9 @@
     });
 
     function prepareSignature() {
-      const dataURL = canvas.toDataURL();
-      document.getElementById('signature-data').value = dataURL;
+      document.getElementById('signature-data').value = canvas.toDataURL();
     }
 
-    // チェックボックスの状態を監視し、全てチェックされたら送信ボタンを有効化
     const checkboxes = document.querySelectorAll('.terms input[type="checkbox"]');
     const submitBtn = document.getElementById('submit-btn');
     checkboxes.forEach(cb => cb.addEventListener('change', () => {
