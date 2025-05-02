@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ご延長・返却予定の確認</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+        select, textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .example {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+        }
+        #notes-container {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>レンタカー延長・返却確認フォーム</h2>
+    <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
+
+        <label for="name">ご契約者名</label>
+        <input type="text" id="name" name="ご契約者名" placeholder="例）石巻 太郎" required>
+
+        <label for="action">延長または返却について選択してください</label>
+        <select id="action" name="契約状況" onchange="updateNotes()">
+            <option value="現在の契約内容で延長を希望">【延長】現在の契約内容で延長を希望</option>
+            <option value="利用期間を変更して延長を希望">【延長】利用期間を変更して延長を希望</option>
+            <option value="延長せず、返却を希望">【返却】延長せず、返却を希望</option>
+        </select>
+
+        <div id="notes-container">
+            <label for="notes">備考（詳細を入力してください）</label>
+            <textarea id="notes" name="備考" rows="4"></textarea>
+            <div class="example" id="notes-example"></div>
+        </div>
+
+        <button type="submit">送信する</button>
+    </form>
+</div>
+
+<script>
+    function updateNotes() {
+        const action = document.getElementById('action').value;
+        const notesContainer = document.getElementById('notes-container');
+        const notes = document.getElementById('notes');
+        const notesExample = document.getElementById('notes-example');
+
+        if (action === "現在の契約内容で延長を希望") {
+            notesContainer.style.display = 'none';
+            notes.value = '';
+        } else if (action === "利用期間を変更して延長を希望") {
+            notesContainer.style.display = 'block';
+            notes.placeholder = "●月●日まで利用します。";
+            notesExample.textContent = "記入例：1月15日まで利用します。";
+        } else if (action === "延長せず、返却を希望") {
+            notesContainer.style.display = 'block';
+            notes.placeholder = "●月●日●時に返却予定です。";
+            notesExample.textContent = "記入例：1月2日15時に返却予定です。";
+        }
+    }
+
+    // 初回ロード時に実行
+    document.addEventListener('DOMContentLoaded', updateNotes);
+</script>
+
+</body>
+</html>
