@@ -14,6 +14,7 @@
     .form-group { margin-bottom: 16px; }
     label { display: block; margin-bottom: 8px; font-weight: bold; }
     input[type="checkbox"] { margin-right: 8px; }
+    input[type="text"] { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
     /* レスポンシブ署名パッド */
     #signature-pad { width: 100%; height: 200px; border: 1px solid #ccc; border-radius: 4px; touch-action: none; }
     button { background-color: #0068e9; color: #fff; border: none; padding: 12px 24px; font-size: 16px; border-radius: 4px; cursor: pointer; }
@@ -28,6 +29,7 @@
     <h1>ご利用にあたり注意事項</h1>
     <form id="terms-form" action="https://ssgform.com/s/As8sidpiQhy1" method="POST" onsubmit="prepareSignature()">
       <div class="terms">
+        <!-- 利用規約チェック項目 -->
         <div class="form-group">
           <label><input type="checkbox" name="term1"> 燃料は満タン貸出・満タン返却です。（配車サービスをご利用の場合、出発時点で満タンとしております。到着時、満タンではない場合はご了承ください。）</label>
         </div>
@@ -50,15 +52,25 @@
           <label><input type="checkbox" name="term7"> 車検時・タイヤ履替時の際には、指定工場（石巻市内）もしくはJBレンタカー石巻店へのご来店が必要となります。</label>
         </div>
       </div>
+
+      <!-- 契約者名入力欄 -->
+      <div class="form-group">
+        <label for="contractor-name">契約者名 <span style="color:red">*</span></label>
+        <input type="text" name="contractorName" id="contractor-name" placeholder="お名前を入力してください" required>
+      </div>
+
+      <!-- 署名パッド -->
       <div class="form-group">
         <label>署名 <span style="color:red">*</span></label>
         <canvas id="signature-pad"></canvas>
         <button type="button" id="clear">クリア</button>
         <input type="hidden" name="署名" id="signature-data" required>
       </div>
+
       <button type="submit" id="submit-btn" disabled>送信</button>
     </form>
   </div>
+
   <script>
     const canvas = document.getElementById('signature-pad');
     const ctx = canvas.getContext('2d');
@@ -105,8 +117,17 @@
     const submitBtn = document.getElementById('submit-btn');
     checkboxes.forEach(cb => cb.addEventListener('change', () => {
       const allChecked = Array.from(checkboxes).every(ch => ch.checked);
-      submitBtn.disabled = !allChecked;
+      // 契約者名と署名も必須入力
+      const nameFilled = document.getElementById('contractor-name').value.trim() !== '';
+      submitBtn.disabled = !(allChecked && nameFilled);
     }));
+
+    // 契約者名入力の監視
+    document.getElementById('contractor-name').addEventListener('input', () => {
+      const allChecked = Array.from(checkboxes).every(ch => ch.checked);
+      const nameFilled = document.getElementById('contractor-name').value.trim() !== '';
+      submitBtn.disabled = !(allChecked && nameFilled);
+    });
   </script>
 </body>
 </html>
