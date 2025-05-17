@@ -4,24 +4,133 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ご利用にあたり注意事項</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f9f9f9; color: #333; margin: 0; padding: 20px; box-sizing: border-box; }
-    .container { max-width: 800px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-    h1 { font-size: 24px; margin-bottom: 16px; }
-    .terms { border: 1px solid #ccc; border-radius: 4px; padding: 16px; margin-bottom: 20px; background-color: #fafafa; }
-    .terms .form-group { margin-bottom: 12px; }
-    .terms label { cursor: pointer; }
-    .form-group { margin-bottom: 16px; }
-    label { display: block; margin-bottom: 8px; font-weight: bold; }
-    input[type="checkbox"] { margin-right: 8px; }
-    input[type="text"] { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-    /* レスポンシブ署名パッド */
-    #signature-pad { width: 100%; height: 200px; border: 1px solid #ccc; border-radius: 4px; touch-action: none; }
-    button { background-color: #0068e9; color: #fff; border: none; padding: 12px 24px; font-size: 16px; border-radius: 4px; cursor: pointer; }
-    button:hover:not(:disabled) { background-color: #0052b4; }
-    button:disabled { background-color: #ccc; cursor: not-allowed; }
-    #clear { background-color: #d9534f; margin-top: 8px; }
-    #clear:hover { background-color: #c9302c; }
+    :root {
+      --primary-color: #0068e9;
+      --primary-hover: #0052b4;
+      --danger-color: #d9534f;
+      --danger-hover: #c9302c;
+      --bg-color: #f4f6f8;
+      --card-bg: #ffffff;
+      --text-color: #333333;
+      --border-radius: 8px;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+    }
+    h1 {
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      text-align: center;
+      color: var(--primary-color);
+    }
+    .terms {
+      background: var(--bg-color);
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .terms .form-group {
+      margin-bottom: 1rem;
+    }
+    .terms label {
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+    }
+    .terms input[type="checkbox"] {
+      flex-shrink: 0;
+      margin-top: 4px;
+      margin-right: 12px;
+      width: 18px;
+      height: 18px;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(0, 105, 217, 0.2);
+    }
+    /* 署名パッド */
+    #signature-pad {
+      width: 100%;
+      height: 200px;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      background: #fff;
+      touch-action: none;
+      transition: var(--transition);
+    }
+    #signature-pad:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(0, 105, 217, 0.2);
+    }
+    button {
+      display: inline-block;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      border: none;
+      border-radius: var(--border-radius);
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    button#submit-btn {
+      width: 100%;
+      background-color: var(--primary-color);
+      color: #fff;
+      margin-top: 1.5rem;
+    }
+    button#submit-btn:hover:not(:disabled) {
+      background-color: var(--primary-hover);
+    }
+    button#submit-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    button#clear {
+      background-color: var(--danger-color);
+      color: #fff;
+      margin-top: 0.5rem;
+    }
+    button#clear:hover {
+      background-color: var(--danger-hover);
+    }
   </style>
 </head>
 <body>
@@ -31,25 +140,25 @@
       <div class="terms">
         <!-- 利用規約チェック項目 -->
         <div class="form-group">
-          <label><input type="checkbox" name="term1"> 燃料は満タン貸出・満タン返却です。（配車サービスをご利用の場合、出発時点で満タンとしております。到着時、満タンではない場合はご了承ください。）</label>
+          <label><input type="checkbox" name="term1">燃料は満タン貸出・満タン返却です。（配車サービスをご利用の場合、出発時点で満タンとしております。到着時、満タンではない場合はご了承ください。）</label>
         </div>
         <div class="form-group">
-          <label><input type="checkbox" name="term2"> 走行距離について　1日300km、1週間1000km、14日～30日間3000kmの走行制限があります。超過時は1km10円で追加請求いたします。</label>
+          <label><input type="checkbox" name="term2">走行距離について　1日300km、1週間1000km、14日～30日間3000kmの走行制限があります。超過時は1km10円で追加請求いたします。</label>
         </div>
         <div class="form-group">
-          <label><input type="checkbox" name="term3"> 賃貸期間2日を超える場合、お客様ご自身での日常点検をお願いします。貸渡期間3カ月以上または、走行距離3000kmに該当の場合、お客様負担でのオイル交換が必須となります。</label>
+          <label><input type="checkbox" name="term3">賃貸期間2日を超える場合、お客様ご自身での日常点検をお願いします。貸渡期間3カ月以上または、走行距離3000kmに該当の場合、お客様負担でのオイル交換が必須となります。</label>
         </div>
         <div class="form-group">
-          <label><input type="checkbox" name="term4"> ご延長の場合、返却予定日の2週間前を目安にご連絡ください。</label>
+          <label><input type="checkbox" name="term4">ご延長の場合、返却予定日の2週間前を目安にご連絡ください。</label>
         </div>
         <div class="form-group">
-          <label><input type="checkbox" name="term5"> ペットの同乗、喫煙はご遠慮いただいております。また、社用車使用等による過度な汚れが残っていた場合、いずれも特別清掃料金20000円を頂きます。</label>
+          <label><input type="checkbox" name="term5">ペットの同乗、喫煙はご遠慮いただいております。また、社用車使用等による過度な汚れが残っていた場合、いずれも特別清掃料金20000円を頂きます。</label>
         </div>
         <div class="form-group">
-          <label><input type="checkbox" name="term6"> 事故・故障時には備え付けファイルより保険会社に連絡、ご対応ください。事故発生時、事故現場より警察及び当社への連絡等所定の手続きが取られていない場合、保険補償制度の適用はできません。</label>
+          <label><input type="checkbox" name="term6">事故・故障時には備え付けファイルより保険会社に連絡、ご対応ください。事故発生時、事故現場より警察及び当社への連絡等所定の手続きが取られていない場合、保険補償制度の適用はできません。</label>
         </div>
         <div class="form-group">
-          <label><input type="checkbox" name="term7"> 車検時・タイヤ履替時の際には、指定工場（石巻市内）もしくはJBレンタカー石巻店へのご来店が必要となります。</label>
+          <label><input type="checkbox" name="term7">車検時・タイヤ履替時の際には、指定工場（石巻市内）もしくはJBレンタカー石巻店へのご来店が必要となります。</label>
         </div>
       </div>
 
@@ -62,7 +171,7 @@
       <!-- 署名パッド -->
       <div class="form-group">
         <label>署名（フルネーム） <span style="color:red">*</span></label>
-        <canvas id="signature-pad"></canvas>
+        <canvas id="signature-pad" tabindex="0"></canvas>
         <button type="button" id="clear">クリア</button>
         <input type="hidden" name="署名" id="signature-data" required>
       </div>
@@ -84,11 +193,10 @@
       canvas.height = h;
       ctx.scale(ratio, ratio);
     }
-
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    canvas.addEventListener('pointerdown', (e) => {
+    canvas.addEventListener('pointerdown', e => {
       drawing = true;
       ctx.lineWidth = 2;
       ctx.lineCap = 'round';
@@ -96,38 +204,29 @@
       const rect = canvas.getBoundingClientRect();
       ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
     });
-    canvas.addEventListener('pointermove', (e) => {
+    canvas.addEventListener('pointermove', e => {
       if (!drawing) return;
       const rect = canvas.getBoundingClientRect();
       ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
       ctx.stroke();
     });
-    canvas.addEventListener('pointerup', () => drawing = false);
-    canvas.addEventListener('pointerout', () => drawing = false);
+    ['pointerup','pointerout'].forEach(evt => canvas.addEventListener(evt, () => drawing = false));
 
-    document.getElementById('clear').addEventListener('click', () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    });
-
+    document.getElementById('clear').addEventListener('click', () => ctx.clearRect(0, 0, canvas.width, canvas.height));
     function prepareSignature() {
       document.getElementById('signature-data').value = canvas.toDataURL();
     }
 
     const checkboxes = document.querySelectorAll('.terms input[type="checkbox"]');
+    const nameInput = document.getElementById('contractor-name');
     const submitBtn = document.getElementById('submit-btn');
-    checkboxes.forEach(cb => cb.addEventListener('change', () => {
+    function updateSubmitState() {
       const allChecked = Array.from(checkboxes).every(ch => ch.checked);
-      // 契約者名と署名も必須入力
-      const nameFilled = document.getElementById('contractor-name').value.trim() !== '';
+      const nameFilled = nameInput.value.trim() !== '';
       submitBtn.disabled = !(allChecked && nameFilled);
-    }));
-
-    // 契約者名入力の監視
-    document.getElementById('contractor-name').addEventListener('input', () => {
-      const allChecked = Array.from(checkboxes).every(ch => ch.checked);
-      const nameFilled = document.getElementById('contractor-name').value.trim() !== '';
-      submitBtn.disabled = !(allChecked && nameFilled);
-    });
+    }
+    checkboxes.forEach(cb => cb.addEventListener('change', updateSubmitState));
+    nameInput.addEventListener('input', updateSubmitState);
   </script>
 </body>
 </html>
