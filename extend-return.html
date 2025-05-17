@@ -4,57 +4,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ご延長・返却予定の確認</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            padding: 20px;
-            background-color: #f9f9f9;
-            color: #333;
+        :root {
+            --primary-color: #0069d9;
+            --primary-hover: #0053a6;
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-radius: 6px;
+            --transition-speed: 0.3s;
         }
-        .container {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 20px;
-            max-width: 600px;
-            margin: auto;
-        }
-        h2 {
-            margin-bottom: 20px;
-            color: #007bff;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 15px;
-        }
-        select, textarea, input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        * {
             box-sizing: border-box;
         }
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+        h2 {
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+        }
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 105, 217, 0.2);
+        }
         button {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #007bff;
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 1.5rem;
+            background-color: var(--primary-color);
             color: #fff;
             border: none;
-            border-radius: 4px;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
             cursor: pointer;
+            transition: background-color var(--transition-speed);
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: var(--primary-hover);
         }
         .example {
-            font-size: 0.9em;
-            color: #555;
-            margin-top: 5px;
+            font-size: 0.875rem;
+            color: #666;
+            margin-top: 0.25rem;
         }
+        /* Notes container animation */
         #notes-container {
-            display: none;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height var(--transition-speed) ease, opacity var(--transition-speed) ease;
+        }
+        #notes-container.active {
+            max-height: 200px;
+            opacity: 1;
         }
     </style>
 </head>
@@ -92,20 +132,18 @@
         const notesExample = document.getElementById('notes-example');
 
         if (action === "現在の契約内容で延長を希望") {
-            notesContainer.style.display = 'none';
+            notesContainer.classList.remove('active');
             notes.value = '';
         } else if (action === "利用期間を変更して延長を希望") {
-            notesContainer.style.display = 'block';
+            notesContainer.classList.add('active');
             notes.placeholder = "●月●日まで利用します。";
             notesExample.textContent = "記入例：1月15日まで利用します。";
         } else if (action === "延長せず、返却を希望") {
-            notesContainer.style.display = 'block';
+            notesContainer.classList.add('active');
             notes.placeholder = "●月●日●時に返却予定です。";
             notesExample.textContent = "記入例：1月2日15時に返却予定です。";
         }
     }
-
-    // 初回ロード時に実行
     document.addEventListener('DOMContentLoaded', updateNotes);
 </script>
 
