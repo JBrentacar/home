@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事故・故障時の対応 - JBレンタカー</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            background: #f0f4f8;
+            color: #333;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white;
+            padding: 20px 16px;
+            text-align: center;
+        }
+        header h1 { font-size: 22px; font-weight: 700; }
+        header p { font-size: 13px; opacity: .9; margin-top: 6px; }
+
+        main {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 14px 60px;
+        }
+
+        /* タブ切り替え */
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            background: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all .2s;
+            color: #999;
+        }
+
+        .tab-btn.active-accident {
+            background: #e74c3c;
+            border-color: #e74c3c;
+            color: white;
+        }
+
+        .tab-btn.active-breakdown {
+            background: #e67e22;
+            border-color: #e67e22;
+            color: white;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ステップ */
+        .steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+
+        .step {
+            background: white;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.07);
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .num-red    { background: #e74c3c; }
+        .num-orange { background: #e67e22; }
+        .num-blue   { background: #0068e9; }
+
+        .step-body h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+        .step-body p  { font-size: 13px; color: #666; line-height: 1.6; }
+
+        /* 電話ボタン */
+        .call-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            border-radius: 14px;
+            padding: 16px 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.07);
+            text-decoration: none;
+            color: #333;
+            margin-bottom: 10px;
+            transition: transform .15s;
+        }
+        .call-btn:active { transform: scale(.98); }
+
+        .call-btn-left { display: flex; align-items: center; gap: 14px; }
+
+        .call-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .call-btn-label { font-size: 12px; color: #999; margin-bottom: 2px; }
+        .call-btn-name  { font-size: 14px; font-weight: 700; }
+        .call-btn-num   { font-size: 20px; font-weight: 700; color: #e74c3c; letter-spacing: .02em; }
+
+        .call-arrow { color: #ccc; font-size: 18px; }
+
+        .icon-red    { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .icon-blue   { background: linear-gradient(135deg, #0068e9, #0051b5); }
+        .icon-green  { background: linear-gradient(135deg, #27ae60, #1e8449); }
+        .icon-orange { background: linear-gradient(135deg, #e67e22, #ca6f1e); }
+
+        /* 注意書きカード */
+        .notice-card {
+            background: #fff8e1;
+            border: 1.5px solid #ffc600;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .notice-card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #b8860b;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .notice-card p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* セクションタイトル */
+        .section-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #999;
+            letter-spacing: .1em;
+            margin: 20px 4px 10px;
+        }
+
+        /* 免責メモ */
+        .disclaimer {
+            background: #f8f8f8;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 12px;
+            color: #888;
+            line-height: 1.7;
+            margin-top: 20px;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #0068e9, #0051b5);
+            color: white;
+            text-align: center;
+            padding: 18px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><i class="fas fa-exclamation-triangle"></i> 事故・故障時の対応</h1>
+    <p>落ち着いて、順番に対応してください</p>
+</header>
+
+<main>
+
+    <!-- タブ -->
+    <div class="tabs">
+        <button class="tab-btn active-accident" onclick="switchTab('accident', this)">
+            🚨 事故のとき
+        </button>
+        <button class="tab-btn" onclick="switchTab('breakdown', this)">
+            🔧 故障のとき
+        </button>
+    </div>
+
+    <!-- 事故タブ -->
+    <div class="tab-content active" id="tab-accident">
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-num num-red">1</div>
+                <div class="step-body">
+                    <h3>まず安全を確保する</h3>
+                    <p>車を安全な場所に移動し、ハザードランプを点灯させてください。けが人がいる場合は無理に動かさないでください。</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num num-red">2</div>
+                <div class="step-body">
+                    <h3>警察・救急に連絡する</h3>
+                    <p>事故の場合は必ず警察（110番）へ通報してください。けが人がいる場合は救急（119番）にも連絡してください。</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num num-blue">3</div>
+                <div class="step-body">
+                    <h3>JBレンタカーに連絡する</h3>
+                    <p>店舗からレッカー手配等を承ります。夜間・休日で繋がらない場合は下記の緊急連絡先へご連絡ください。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 緊急連絡先 -->
+        <div class="section-label">緊急連絡先</div>
+
+        <a href="tel:0120204625" class="call-btn">
+            <div class="call-btn-left">
+                <div class="call-icon icon-blue"><i class="fas fa-store"></i></div>
+                <div>
+                    <div class="call-btn-label">まずはこちら</div>
+                    <div class="call-btn-name">JBレンタカー石巻店</div>
+                    <div class="call-btn-num">0120-204-625</div>
+                </div>
+            </div>
+            <i class="fas fa-chevron-right call-arrow"></i>
+        </a>
+
+        <a href="tel:0120258365" class="call-btn">
+            <div class="call-btn-left">
+                <div class="call-icon icon-red"><i class="fas fa-shield-alt"></i></div>
+                <div>
+                    <div class="call-btn-label">保険（24時間365日）</div>
+                    <div class="call-btn-name">三井住友海上 事故受付</div>
+                    <div class="call-btn-num">0120-258-365</div>
+                </div>
+            </div>
+            <i class="fas fa-chevron-right call-arrow"></i>
+        </a>
+
+        <a href="tel:0120096991" class="call-btn">
+            <div class="call-btn-left">
+                <div class="call-icon icon-orange"><i class="fas fa-truck"></i></div>
+                <div>
+                    <div class="call-btn-label">レッカー手配（24時間）</div>
+                    <div class="call-btn-name">おクルマQQ隊</div>
+                    <div class="call-btn-num">0120-096-991</div>
+                </div>
+            </div>
+            <i class="fas fa-chevron-right call-arrow"></i>
+        </a>
+
+        <!-- 注意書き -->
+        <div class="section-label">状況別の対応</div>
+
+        <div class="notice-card">
+            <h3><i class="fas fa-moon"></i> 深夜・店舗が対応できない場合</h3>
+            <p>一度レッカー会社に車を預け、翌朝店舗へ運ぶ流れでレッカー配送を手配してください。</p>
+        </div>
+
+        <div class="notice-card">
+            <h3><i class="fas fa-map-marker-alt"></i> 店舗から遠方の場合</h3>
+            <p>三井ではなく<strong>JAF</strong>に連絡し、JAF指定工場までのレッカー配送を手配してください。その後、三井住友海上保険に状況を説明し連絡してください。</p>
+        </div>
+
+    </div>
+
+    <!-- 故障タブ -->
+    <div class="tab-content" id="tab-breakdown">
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-num num-orange">1</div>
+                <div class="step-body">
+                    <h3>安全な場所に停車する</h3>
+                    <p>ハザードランプを点灯し、路肩など安全な場所に停車してください。</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num num-blue">2</div>
+                <div class="step-body">
+                    <h3>JBレンタカーに連絡する</h3>
+                    <p>代車・レッカー手配等を承ります。まずは店舗にご連絡ください。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-label">緊急連絡先</div>
+
+        <a href="tel:0120204625" class="call-btn">
+            <div class="call-btn-left">
+                <div class="call-icon icon-blue"><i class="fas fa-store"></i></div>
+                <div>
+                    <div class="call-btn-label">代車・レッカー手配</div>
+                    <div class="call-btn-name">JBレンタカー石巻店</div>
+                    <div class="call-btn-num">0120-204-625</div>
+                </div>
+            </div>
+            <i class="fas fa-chevron-right call-arrow"></i>
+        </a>
+
+        <a href="tel:0570008139" class="call-btn">
+            <div class="call-btn-left">
+                <div class="call-icon icon-green"><i class="fas fa-car"></i></div>
+                <div>
+                    <div class="call-btn-label">ロードサービス（24時間）</div>
+                    <div class="call-btn-name">JAF</div>
+                    <div class="call-btn-num">0570-00-8139</div>
+                </div>
+            </div>
+            <i class="fas fa-chevron-right call-arrow"></i>
+        </a>
+
+        <a href="tel:0120096991" class="call-btn">
+            <div class="call-btn-left">
+                <div class="call-icon icon-orange"><i class="fas fa-truck"></i></div>
+                <div>
+                    <div class="call-btn-label">レッカー手配（24時間）</div>
+                    <div class="call-btn-name">おクルマQQ隊</div>
+                    <div class="call-btn-num">0120-096-991</div>
+                </div>
+            </div>
+            <i class="fas fa-chevron-right call-arrow"></i>
+        </a>
+
+    </div>
+
+    <!-- 共通：費用について -->
+    <div class="disclaimer">
+        ※ レッカー費用・修理費などは保険適用となりますので、別途請求はありません（例外あり）。<br>
+        ※ 事故・故障の際の対処はお客様責任となります。ご不明な点はJBレンタカー石巻店までお問い合わせください。
+    </div>
+
+</main>
+
+<footer>
+    © JBレンタカー石巻店｜0120-204-625
+</footer>
+
+<script>
+    function switchTab(tab, btn) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => {
+            el.classList.remove('active-accident', 'active-breakdown');
+        });
+        document.getElementById('tab-' + tab).classList.add('active');
+        btn.classList.add(tab === 'accident' ? 'active-accident' : 'active-breakdown');
+    }
+</script>
+
+</body>
+</html>
