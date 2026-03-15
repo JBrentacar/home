@@ -224,7 +224,7 @@
 
 <main>
 
-  <form id="terms-form" action="https://ssgform.com/s/As8sidpiQhy1" method="POST" onsubmit="prepareSignature()">
+  <form id="terms-form" action="https://ssgform.com/s/As8sidpiQhy1" method="POST" onsubmit="return false;">
 
     <!-- 規約チェック -->
     <div class="terms-card">
@@ -291,7 +291,7 @@
       </div>
     </div>
 
-    <button type="submit" class="submit-btn" id="submit-btn" disabled>
+    <button type="button" class="submit-btn" id="submit-btn" disabled onclick="submitWithSignature()">
       <i class="fas fa-paper-plane"></i> 同意して送信する
     </button>
 
@@ -348,8 +348,46 @@
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   });
 
-  function prepareSignature() {
-    document.getElementById('signature-data').value = canvas.toDataURL();
+  async function submitWithSignature() {
+    // 署名が空かチェック
+    const blank = document.createElement('canvas');
+    blank.width = canvas.width; blank.height = canvas.height;
+    if (canvas.toDataURL() === blank.toDataURL()) {
+      alert('署名を入力してください。');
+      return;
+    }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
+
+    try {
+      // imgbbに署名画像をアップロード
+      const base64 = canvas.toDataURL('image/png').split(',')[1];
+      const formData = new FormData();
+      formData.append('image', base64);
+      const res = await fetch('https://api.imgbb.com/1/upload?key=8f8fdbe7d09c66448c9f901c65f2bca5', {
+        method: 'POST', body: formData
+      });
+      const json = await res.json();
+
+      if (!json.success) throw new Error('imgbb upload failed');
+
+      const imgUrl = json.data.url;
+      document.getElementById('signature-data').value = imgUrl;
+
+      // SSGFormに送信
+      const sf = new FormData(document.getElementById('terms-form'));
+      await fetch('https://ssgform.com/s/As8sidpiQhy1', { method: 'POST', body: sf });
+
+      btn.innerHTML = '<i class="fas fa-check"></i> 送信完了';
+      btn.style.background = 'linear-gradient(135deg,#27ae60,#1e8449)';
+
+    } catch (e) {
+      alert('送信に失敗しました。通信状況を確認して再度お試しください。');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> 同意して送信する';
+    }
   }
 
   // 進捗・送信ボタン制御
