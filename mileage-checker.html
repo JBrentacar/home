@@ -3,305 +3,391 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JBレンタカー石巻店 走行距離チェッカー</title>
+    <title>走行距離チェッカー - JBレンタカー石巻店</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        /* CSS スタイル */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #f0f5f9; /* 背景色を薄いグレーに変更 */
-            margin: 0;
-            padding: 0;
-            color: #333; /* 文字色を濃いグレーに設定 */
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            background: #f0f4f8;
+            color: #333;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            width: 90%;
-            max-width: 600px;
-            margin: 50px auto;
-            background: #ffffff; /* 白背景 */
-            padding: 20px 30px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* シャドウを少し強めに */
-            border-radius: 10px; /* 角を少し丸める */
-        }
-
-        h1 {
+        header {
+            background: linear-gradient(135deg, #0068e9, #0051b5);
+            padding: 20px 16px 24px;
             text-align: center;
-            color: #0068e9; /* 指定された青色に変更 */
-            font-size: 1.8em;
-            margin-bottom: 20px;
+            color: white;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
+        header img {
+            max-width: 90px;
             margin-bottom: 8px;
-            color: #555555; /* ライトグレー */
-            font-weight: bold;
         }
 
-        input[type="date"],
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #cccccc; /* 薄いグレー */
-            border-radius: 5px;
-            font-size: 1em;
+        header h1 {
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: .05em;
         }
 
-        button {
+        header p {
+            font-size: 13px;
+            opacity: .85;
+            margin-top: 4px;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 14px 60px;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,.08);
+            padding: 22px 18px;
+            margin-bottom: 16px;
+        }
+
+        .form-card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-card-title i { color: #0068e9; }
+
+        .field-group {
+            margin-bottom: 14px;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .field-group input,
+        .field-group select {
             width: 100%;
-            padding: 12px;
-            background: #ffc600; /* 指定された黄色に変更 */
+            padding: 12px 14px;
+            border: 1.5px solid #dde3ec;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            color: #333;
+            background: #fafbfd;
+            transition: border-color .2s, box-shadow .2s;
+            -webkit-appearance: none;
+        }
+
+        .field-group input:focus,
+        .field-group select:focus {
+            outline: none;
+            border-color: #0068e9;
+            box-shadow: 0 0 0 3px rgba(0,104,233,.15);
+            background: white;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #0068e9, #0051b5);
+            color: white;
             border: none;
-            color: #ffffff;
-            font-size: 1.1em;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 12px rgba(0,104,233,.35);
+            transition: transform .2s, box-shadow .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        button:hover {
-            background: #e6b800; /* ホバー時に少し暗い黄色に変更 */
-            transform: translateY(-2px);
+        .submit-btn:active {
+            transform: scale(.98);
+            box-shadow: 0 2px 6px rgba(0,104,233,.3);
         }
 
-        .result {
-            margin-top: 25px;
-            padding: 20px;
-            background: #e0f7fa; /* 薄いシアン */
-            border-radius: 5px;
-            border-left: 5px solid #0068e9; /* 左側に指定された青色のボーダー */
+        /* 結果カード */
+        .result-card {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,.08);
+            padding: 22px 18px;
+            margin-bottom: 16px;
         }
 
-        .result p {
-            margin: 10px 0;
-            line-height: 1.6;
+        .result-card.visible { display: block; }
+
+        .result-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* エラーメッセージのスタイル */
-        .error {
-            color: #d9534f; /* 赤色 */
-            font-weight: bold;
+        .result-title i { color: #0068e9; }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f4f8;
+            font-size: 14px;
         }
 
-        /* レスポンシブデザイン */
-        @media (max-width: 600px) {
-            .container {
-                padding: 15px 20px;
-            }
+        .result-row:last-child { border-bottom: none; }
 
-            h1 {
-                font-size: 1.5em;
-            }
+        .result-label { color: #777; }
+        .result-value { font-weight: 700; color: #333; }
 
-            button {
-                font-size: 1em;
-            }
+        /* ステータスバナー */
+        .status-banner {
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-top: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
 
-            .form-group {
-                margin-bottom: 15px;
-            }
+        .status-banner i { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
 
-            .result {
-                padding: 15px;
-            }
+        .status-ok {
+            background: #eafaf1;
+            color: #1e8449;
+        }
 
-            .result p {
-                margin: 8px 0;
-            }
+        .status-over {
+            background: #fef0ee;
+            color: #c0392b;
+        }
+
+        .status-warn {
+            background: #fff8e1;
+            color: #7a6000;
+        }
+
+        .status-banner .sub {
+            font-size: 13px;
+            font-weight: 400;
+            margin-top: 3px;
+            opacity: .85;
+        }
+
+        /* エラー */
+        .error-msg {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #0068e9, #0051b5);
+            color: white;
+            text-align: center;
+            padding: 18px;
+            font-size: 13px;
+            line-height: 1.8;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>JBレンタカー石巻店 走行距離チェッカー</h1>
-        <form id="mileageForm">
-            <div class="form-group">
-                <label for="startDate">貸渡開始日:</label>
-                <input type="date" id="startDate" required>
+
+<header>
+    <img src="logo.png" alt="JBレンタカー石巻店">
+    <h1>走行距離チェッカー</h1>
+    <p>超過料金・オイル交換の要否を確認</p>
+</header>
+
+<main>
+
+    <div class="form-card">
+        <div class="form-card-title">
+            <i class="fas fa-calendar-alt"></i> 貸渡期間
+        </div>
+        <div class="two-col">
+            <div class="field-group">
+                <label>貸渡開始日</label>
+                <input type="date" id="startDate">
             </div>
-            <div class="form-group">
-                <label for="endDate">貸渡終了日:</label>
-                <input type="date" id="endDate" required>
+            <div class="field-group">
+                <label>貸渡終了日</label>
+                <input type="date" id="endDate">
             </div>
-            <div class="form-group">
-                <label for="startKm">貸出時走行距離（㎞）:</label>
-                <input type="number" id="startKm" min="0" required>
-            </div>
-            <div class="form-group">
-                <label for="endKm">返却時走行距離（㎞）:</label>
-                <input type="number" id="endKm" min="0" required>
-            </div>
-            <div class="form-group">
-                <label for="vehicleType">車種:</label>
-                <select id="vehicleType" required>
-                    <option value="">選択してください</option>
-                    <option value="軽自動車">軽自動車</option>
-                    <option value="普通自動車">普通自動車</option>
-                </select>
-            </div>
-            <button type="submit">判定する</button>
-        </form>
-        <div id="result" class="result"></div>
+        </div>
     </div>
 
-    <script>
-        // JavaScript ロジック
-        document.getElementById('mileageForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+    <div class="form-card">
+        <div class="form-card-title">
+            <i class="fas fa-tachometer-alt"></i> 走行距離
+        </div>
+        <div class="two-col">
+            <div class="field-group">
+                <label>貸出時（㎞）</label>
+                <input type="number" id="startKm" min="0" placeholder="例）12000">
+            </div>
+            <div class="field-group">
+                <label>返却時（㎞）</label>
+                <input type="number" id="endKm" min="0" placeholder="例）13500">
+            </div>
+        </div>
+        <div class="field-group">
+            <label>車種</label>
+            <select id="vehicleType">
+                <option value="">選択してください</option>
+                <option value="軽自動車">軽自動車</option>
+                <option value="普通自動車">普通自動車</option>
+            </select>
+        </div>
+        <div class="error-msg" id="errorMsg"><i class="fas fa-exclamation-circle"></i> <span id="errorText"></span></div>
+    </div>
 
-            // 入力値の取得
-            const startDateInput = document.getElementById('startDate').value;
-            const endDateInput = document.getElementById('endDate').value;
-            const startKm = parseInt(document.getElementById('startKm').value, 10);
-            const endKm = parseInt(document.getElementById('endKm').value, 10);
-            const vehicleType = document.getElementById('vehicleType').value;
+    <button class="submit-btn" onclick="calculate()">
+        <i class="fas fa-calculator"></i> 判定する
+    </button>
 
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = ''; // 結果表示エリアをクリア
+    <!-- 結果 -->
+    <div class="result-card" id="resultCard">
+        <div class="result-title">
+            <i class="fas fa-chart-bar"></i> 判定結果
+        </div>
 
-            // 入力検証
-            if (!startDateInput || !endDateInput) {
-                resultDiv.innerHTML = '<p class="error">開始日と終了日を選択してください。</p>';
-                return;
-            }
+        <div class="result-row">
+            <span class="result-label">レンタル期間</span>
+            <span class="result-value" id="r-days">―</span>
+        </div>
+        <div class="result-row">
+            <span class="result-label">走行距離</span>
+            <span class="result-value" id="r-driven">―</span>
+        </div>
+        <div class="result-row">
+            <span class="result-label">走行上限</span>
+            <span class="result-value" id="r-limit">―</span>
+        </div>
 
-            const startDate = new Date(startDateInput);
-            const endDate = new Date(endDateInput);
+        <div class="status-banner" id="r-mileage-status"></div>
+        <div class="status-banner" id="r-oil-status" style="margin-top:10px;"></div>
+    </div>
 
-            if (isNaN(startKm) || isNaN(endKm)) {
-                resultDiv.innerHTML = '<p class="error">走行距離は数値で入力してください。</p>';
-                return;
-            }
+</main>
 
-            if (endDate < startDate) {
-                resultDiv.innerHTML = '<p class="error">終了日は開始日以降の日付を入力してください。</p>';
-                return;
-            }
+<footer>
+    &copy; 2025 JBレンタカー石巻店<br>
+    0120-204-625
+</footer>
 
-            if (endKm < startKm) {
-                resultDiv.innerHTML = '<p class="error">返却時の走行距離は貸出時の走行距離以上でなければなりません。</p>';
-                return;
-            }
+<script>
+    function showError(msg) {
+        const el = document.getElementById('errorMsg');
+        document.getElementById('errorText').textContent = msg;
+        el.style.display = 'block';
+        document.getElementById('resultCard').classList.remove('visible');
+    }
 
-            if (!vehicleType) {
-                resultDiv.innerHTML = '<p class="error">車種を選択してください。</p>';
-                return;
-            }
+    function clearError() {
+        document.getElementById('errorMsg').style.display = 'none';
+    }
 
-            // レンタル期間の計算（1泊＝1日、開始日～終了日で終了日を含まない）
-            const timeDiff = endDate - startDate;
-            const rentalDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    function calculateAllowedKm(days) {
+        const table = {
+            1:300,2:600,3:900,4:1000,5:1000,6:1000,7:1000,
+            8:1300,9:1600,10:1900,11:2000,12:2000,13:2000,14:2000,
+            15:2300,16:2600,17:2900,18:3000,19:3000,20:3000,21:3000,
+            22:3000,23:3000,24:3000,25:3000,26:3000,27:3000,28:3000,29:3000,30:3000
+        };
+        let total = 0, rem = days;
+        while (rem > 0) {
+            if (rem >= 30) { total += 3000; rem -= 30; }
+            else { total += table[rem] || 3000; rem = 0; }
+        }
+        return total;
+    }
 
-            if (rentalDays <= 0) {
-                resultDiv.innerHTML = '<p class="error">貸渡終了日は貸渡開始日より後の日付を入力してください。</p>';
-                return;
-            }
+    function calculate() {
+        clearError();
 
-            // 走行距離の計算
-            const drivenKm = endKm - startKm;
+        const startDateVal = document.getElementById('startDate').value;
+        const endDateVal   = document.getElementById('endDate').value;
+        const startKm      = parseInt(document.getElementById('startKm').value, 10);
+        const endKm        = parseInt(document.getElementById('endKm').value, 10);
+        const vehicleType  = document.getElementById('vehicleType').value;
 
-            // 走行上限の計算
-            function calculateAllowedKm(days) {
-                const allowedKmTable = {
-                    1: 300,
-                    2: 600,
-                    3: 900,
-                    4: 1000,
-                    5: 1000,
-                    6: 1000,
-                    7: 1000,
-                    8: 1300,
-                    9: 1600,
-                    10: 1900,
-                    11: 2000,
-                    12: 2000,
-                    13: 2000,
-                    14: 2000,
-                    15: 2300,
-                    16: 2600,
-                    17: 2900,
-                    18: 3000,
-                    19: 3000,
-                    20: 3000,
-                    21: 3000,
-                    22: 3000,
-                    23: 3000,
-                    24: 3000,
-                    25: 3000,
-                    26: 3000,
-                    27: 3000,
-                    28: 3000,
-                    29: 3000,
-                    30: 3000
-                };
+        if (!startDateVal || !endDateVal) return showError('開始日と終了日を選択してください。');
+        if (isNaN(startKm) || isNaN(endKm)) return showError('走行距離を数値で入力してください。');
+        if (!vehicleType) return showError('車種を選択してください。');
 
-                if (days <= 0) return 0;
+        const startDate = new Date(startDateVal);
+        const endDate   = new Date(endDateVal);
 
-                let totalAllowedKm = 0;
-                let remainingDays = days;
+        if (endDate <= startDate) return showError('終了日は開始日より後の日付を入力してください。');
+        if (endKm < startKm) return showError('返却時の走行距離は貸出時以上の値を入力してください。');
 
-                while (remainingDays > 0) {
-                    if (remainingDays >= 30) {
-                        totalAllowedKm += 3000;
-                        remainingDays -= 30;
-                    } else {
-                        if (allowedKmTable.hasOwnProperty(remainingDays)) {
-                            totalAllowedKm += allowedKmTable[remainingDays];
-                        } else {
-                            // 残り日数が30を超える場合
-                            totalAllowedKm += allowedKmTable[30];
-                        }
-                        remainingDays = 0;
-                    }
-                }
+        const rentalDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+        const drivenKm   = endKm - startKm;
+        const allowedKm  = calculateAllowedKm(rentalDays);
+        const overKm     = drivenKm - allowedKm;
+        const extraFee   = overKm > 0 ? overKm * 10 : 0;
+        const oilNeeded  = rentalDays > 90 || drivenKm >= 3000;
+        const oilFee     = vehicleType === '軽自動車' ? 4000 : 6000;
 
-                return totalAllowedKm;
-            }
+        document.getElementById('r-days').textContent   = `${rentalDays} 日間`;
+        document.getElementById('r-driven').textContent = `${drivenKm.toLocaleString()} ㎞`;
+        document.getElementById('r-limit').textContent  = `${allowedKm.toLocaleString()} ㎞`;
 
-            const allowedKm = calculateAllowedKm(rentalDays);
-            const overKm = drivenKm - allowedKm;
-            const extraFee = overKm > 0 ? overKm * 10 : 0;
+        const mileageEl = document.getElementById('r-mileage-status');
+        if (overKm > 0) {
+            mileageEl.className = 'status-banner status-over';
+            mileageEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i><div>走行上限を ${overKm.toLocaleString()}㎞ 超過しています<div class="sub">追加料金：${extraFee.toLocaleString()} 円（10円/㎞）</div></div>`;
+        } else {
+            mileageEl.className = 'status-banner status-ok';
+            mileageEl.innerHTML = `<i class="fas fa-check-circle"></i><div>走行距離の超過はありません<div class="sub">あと ${Math.abs(overKm).toLocaleString()}㎞ 走行可能</div></div>`;
+        }
 
-            // エンジンオイル交換の判定
-            const oilChangeNeeded = rentalDays > 90 || drivenKm >= 3000;
+        const oilEl = document.getElementById('r-oil-status');
+        if (oilNeeded) {
+            oilEl.className = 'status-banner status-warn';
+            oilEl.innerHTML = `<i class="fas fa-oil-can"></i><div>エンジンオイル交換が必要です<div class="sub">未交換での返却時：${oilFee.toLocaleString()} 円（${vehicleType}）</div></div>`;
+        } else {
+            oilEl.className = 'status-banner status-ok';
+            oilEl.innerHTML = `<i class="fas fa-check-circle"></i><div>エンジンオイル交換は不要です</div>`;
+        }
 
-            // 結果の表示
-            let resultHTML = `
-                <p><strong>レンタル期間:</strong> ${rentalDays} 日</p>
-                <p><strong>走行距離:</strong> ${drivenKm} ㎞</p>
-                <p><strong>走行上限:</strong> ${allowedKm} ㎞</p>
-            `;
+        const resultCard = document.getElementById('resultCard');
+        resultCard.classList.add('visible');
+        setTimeout(() => resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    }
+</script>
 
-            if (overKm > 0) {
-                resultHTML += `
-                    <p style="color:orange;"><strong>走行上限を超過しています。</strong></p>
-                    <p><strong>追加請求額:</strong> ${extraFee.toLocaleString()} 円</p>
-                `;
-            } else {
-                resultHTML += `<p style="color:green;"><strong>走行距離の超過はありません。</strong></p>`;
-            }
-
-            if (oilChangeNeeded) {
-                resultHTML += `
-                    <p style="color:red; margin-top:15px;"><strong>エンジンオイル交換が必要です。</strong></p>
-                    <p>未交換での返却の場合、以下の料金が発生します。</p>
-                    <ul>
-                        <li>軽自動車: 4,000円</li>
-                        <li>普通自動車: 6,000円</li>
-                    </ul>
-                `;
-            } else {
-                resultHTML += `<p style="color:green; margin-top:15px;"><strong>エンジンオイル交換は不要です。</strong></p>`;
-            }
-
-            resultDiv.innerHTML = resultHTML;
-        });
-    </script>
 </body>
 </html>
