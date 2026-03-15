@@ -3,148 +3,368 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ご延長・返却予定の確認</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>延長・返却のお手続き - JBレンタカー石巻店</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #0069d9;
-            --primary-hover: #0053a6;
-            --bg-color: #f4f6f8;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --border-radius: 6px;
-            --transition-speed: 0.3s;
-        }
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            margin: 0;
-            padding: 20px;
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            background: #f0f4f8;
+            color: #333;
+            -webkit-font-smoothing: antialiased;
         }
-        .container {
+
+        header {
+            background: linear-gradient(135deg, #0068e9, #0051b5);
+            padding: 20px 16px 24px;
+            text-align: center;
+            color: white;
+        }
+
+        header img {
+            max-width: 90px;
+            margin-bottom: 8px;
+        }
+
+        header h1 {
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: .05em;
+        }
+
+        header p {
+            font-size: 13px;
+            opacity: .85;
+            margin-top: 4px;
+        }
+
+        main {
             max-width: 600px;
             margin: 0 auto;
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 2rem;
+            padding: 20px 14px 60px;
         }
-        h2 {
-            margin-bottom: 1.5rem;
-            font-weight: 500;
-            color: var(--primary-color);
+
+        /* 選択カード */
+        .choice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .choice-card {
+            background: white;
+            border: 2px solid #e0e6ef;
+            border-radius: 14px;
+            padding: 16px 10px;
             text-align: center;
-        }
-        label {
-            display: block;
-            margin-top: 1rem;
-            font-weight: 500;
-        }
-        input[type="text"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 0.75rem;
-            margin-top: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
-        }
-        input[type="text"]:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 105, 217, 0.2);
-        }
-        button {
-            width: 100%;
-            padding: 0.75rem;
-            margin-top: 1.5rem;
-            background-color: var(--primary-color);
-            color: #fff;
-            border: none;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            font-weight: 500;
             cursor: pointer;
-            transition: background-color var(--transition-speed);
+            transition: all .2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
         }
-        button:hover {
-            background-color: var(--primary-hover);
+
+        .choice-card:active { transform: scale(.97); }
+
+        .choice-card.selected-extend1 {
+            border-color: #0068e9;
+            background: #eef5ff;
         }
-        .example {
-            font-size: 0.875rem;
-            color: #666;
-            margin-top: 0.25rem;
+
+        .choice-card.selected-extend2 {
+            border-color: #0068e9;
+            background: #eef5ff;
         }
-        /* Notes container animation */
-        #notes-container {
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: max-height var(--transition-speed) ease, opacity var(--transition-speed) ease;
+
+        .choice-card.selected-return {
+            border-color: #e74c3c;
+            background: #fef0ee;
         }
-        #notes-container.active {
-            max-height: 200px;
-            opacity: 1;
+
+        .choice-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .icon-blue   { background: linear-gradient(135deg, #0068e9, #0051b5); }
+        .icon-indigo { background: linear-gradient(135deg, #6c5ce7, #4834d4); }
+        .icon-red    { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+
+        .choice-label {
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.35;
+            color: #333;
+        }
+
+        /* フォームカード */
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,.08);
+            padding: 24px 20px;
+            display: none;
+        }
+
+        .form-card.visible { display: block; }
+
+        .form-card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-card-title i { color: #0068e9; }
+        .form-card-title.red i { color: #e74c3c; }
+
+        .field-group {
+            margin-bottom: 16px;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .field-group input,
+        .field-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #dde3ec;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            color: #333;
+            background: #fafbfd;
+            transition: border-color .2s, box-shadow .2s;
+            -webkit-appearance: none;
+        }
+
+        .field-group input:focus,
+        .field-group textarea:focus {
+            outline: none;
+            border-color: #0068e9;
+            box-shadow: 0 0 0 3px rgba(0,104,233,.15);
+            background: white;
+        }
+
+        .field-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .field-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        /* 送信ボタン */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 8px;
+            background: linear-gradient(135deg, #0068e9, #0051b5);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,104,233,.35);
+            transition: transform .2s, box-shadow .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .submit-btn:active {
+            transform: scale(.98);
+            box-shadow: 0 2px 6px rgba(0,104,233,.3);
+        }
+
+        .submit-btn.red-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            box-shadow: 0 4px 12px rgba(231,76,60,.35);
+        }
+
+        /* 注意書き */
+        .notice {
+            background: #fff8e1;
+            border: 1.5px solid #ffc600;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 13px;
+            color: #7a6000;
+            line-height: 1.7;
+            margin-top: 16px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .notice i { flex-shrink: 0; margin-top: 2px; color: #f4a100; }
+
+        footer {
+            background: linear-gradient(135deg, #0068e9, #0051b5);
+            color: white;
+            text-align: center;
+            padding: 18px;
+            font-size: 13px;
+            line-height: 1.8;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>レンタカー延長・返却確認フォーム</h2>
-    <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
+<header>
+    <img src="logo.png" alt="JBレンタカー石巻店">
+    <h1>延長・返却のお手続き</h1>
+    <p>ご希望の内容をお知らせください</p>
+</header>
 
-        <label for="name">ご契約者名</label>
-        <input type="text" id="name" name="ご契約者名" placeholder="例）石巻 太郎" required>
+<main>
 
-        <label for="action">延長または返却について選択してください</label>
-        <select id="action" name="契約状況" onchange="updateNotes()">
-            <option value="現在の契約内容で延長を希望">【延長】現在の契約内容で延長を希望</option>
-            <option value="利用期間を変更して延長を希望">【延長】利用期間を変更して延長を希望</option>
-            <option value="延長せず、返却を希望">【返却】延長せず、返却を希望</option>
-        </select>
+    <!-- 選択カード -->
+    <div class="choice-grid">
 
-        <div id="notes-container">
-            <label for="notes">備考（詳細を入力してください）</label>
-            <textarea id="notes" name="備考" rows="4"></textarea>
-            <div class="example" id="notes-example"></div>
+        <div class="choice-card" onclick="selectChoice('extend1', this)">
+            <div class="choice-icon icon-blue">
+                <i class="fas fa-redo"></i>
+            </div>
+            <div class="choice-label">同条件で<br>延長</div>
         </div>
 
-        <button type="submit">送信する</button>
-    </form>
-</div>
+        <div class="choice-card" onclick="selectChoice('extend2', this)">
+            <div class="choice-icon icon-indigo">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="choice-label">期間変更<br>して延長</div>
+        </div>
+
+        <div class="choice-card" onclick="selectChoice('return', this)">
+            <div class="choice-icon icon-red">
+                <i class="fas fa-car-side"></i>
+            </div>
+            <div class="choice-label">返却する</div>
+        </div>
+
+    </div>
+
+    <!-- 同条件で延長フォーム -->
+    <div class="form-card" id="form-extend1">
+        <div class="form-card-title">
+            <i class="fas fa-redo"></i> 現在の契約内容で延長
+        </div>
+        <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
+            <input type="hidden" name="契約状況" value="現在の契約内容で延長を希望">
+            <div class="field-group">
+                <label>ご契約者名</label>
+                <input type="text" name="ご契約者名" placeholder="例）石巻 太郎" required>
+            </div>
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> 送信する
+            </button>
+        </form>
+        <div class="notice">
+            <i class="fas fa-info-circle"></i>
+            <span>現在の料金・車両・返却場所と同じ条件で延長いたします。変更がある場合は「期間変更して延長」をお選びください。</span>
+        </div>
+    </div>
+
+    <!-- 期間変更して延長フォーム -->
+    <div class="form-card" id="form-extend2">
+        <div class="form-card-title">
+            <i class="fas fa-calendar-alt"></i> 利用期間を変更して延長
+        </div>
+        <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
+            <input type="hidden" name="契約状況" value="利用期間を変更して延長を希望">
+            <div class="field-group">
+                <label>ご契約者名</label>
+                <input type="text" name="ご契約者名" placeholder="例）石巻 太郎" required>
+            </div>
+            <div class="field-group">
+                <label>新しい返却予定日時</label>
+                <input type="text" name="備考" placeholder="例）3月20日 15時" required>
+                <div class="field-hint">延長後の返却希望日・時間をご記入ください</div>
+            </div>
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> 送信する
+            </button>
+        </form>
+    </div>
+
+    <!-- 返却フォーム -->
+    <div class="form-card" id="form-return">
+        <div class="form-card-title red">
+            <i class="fas fa-car-side"></i> 返却のご連絡
+        </div>
+        <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
+            <input type="hidden" name="契約状況" value="延長せず、返却を希望">
+            <div class="field-group">
+                <label>ご契約者名</label>
+                <input type="text" name="ご契約者名" placeholder="例）石巻 太郎" required>
+            </div>
+            <div class="field-group">
+                <label>返却予定日時</label>
+                <input type="text" name="備考" placeholder="例）3月18日 13時" required>
+                <div class="field-hint">返却予定の日・時間をご記入ください</div>
+            </div>
+            <button type="submit" class="submit-btn red-btn">
+                <i class="fas fa-paper-plane"></i> 送信する
+            </button>
+        </form>
+        <div class="notice">
+            <i class="fas fa-info-circle"></i>
+            <span>返却は石巻店（〒986-0814 宮城県石巻市南中里2丁目9‐27）へお越しください。営業時間外の場合は事前にご相談ください。</span>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    &copy; 2025 JBレンタカー石巻店<br>
+    0120-204-625
+</footer>
 
 <script>
-    function updateNotes() {
-        const action = document.getElementById('action').value;
-        const notesContainer = document.getElementById('notes-container');
-        const notes = document.getElementById('notes');
-        const notesExample = document.getElementById('notes-example');
+    let selectedCard = null;
 
-        if (action === "現在の契約内容で延長を希望") {
-            notesContainer.classList.remove('active');
-            notes.value = '';
-        } else if (action === "利用期間を変更して延長を希望") {
-            notesContainer.classList.add('active');
-            notes.placeholder = "●月●日まで利用します。";
-            notesExample.textContent = "記入例：1月15日まで利用します。";
-        } else if (action === "延長せず、返却を希望") {
-            notesContainer.classList.add('active');
-            notes.placeholder = "●月●日●時に返却予定です。";
-            notesExample.textContent = "記入例：1月2日15時に返却予定です。";
-        }
+    function selectChoice(type, el) {
+        // カードのハイライトをリセット
+        document.querySelectorAll('.choice-card').forEach(c => {
+            c.classList.remove('selected-extend1', 'selected-extend2', 'selected-return');
+        });
+
+        // フォームをすべて非表示
+        document.querySelectorAll('.form-card').forEach(f => f.classList.remove('visible'));
+
+        // 選択したカードをハイライト
+        el.classList.add('selected-' + type);
+
+        // 対応フォームを表示してスクロール
+        const form = document.getElementById('form-' + type);
+        form.classList.add('visible');
+        setTimeout(() => form.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
     }
-    document.addEventListener('DOMContentLoaded', updateNotes);
 </script>
 
 </body>
