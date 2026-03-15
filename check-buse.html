@@ -380,8 +380,7 @@
       const sf = new FormData(document.getElementById('terms-form'));
       await fetch('https://ssgform.com/s/As8sidpiQhy1', { method: 'POST', body: sf });
 
-      btn.innerHTML = '<i class="fas fa-check"></i> 送信完了';
-      btn.style.background = 'linear-gradient(135deg,#27ae60,#1e8449)';
+      window.location.href = 'https://jbrentacar.github.io/done/check-buse.html';
 
     } catch (e) {
       alert('送信に失敗しました。通信状況を確認して再度お試しください。');
