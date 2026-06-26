@@ -9,19 +9,30 @@
     html, body {
       height: 100%;
       overflow: hidden;
+      background: #f0f4f8;
+    }
+    .iframe-wrapper {
+      position: fixed;
+      top: -30px;
+      left: 0;
+      right: 0;
+      bottom: -30px;
+      overflow: hidden;
     }
     iframe {
       width: 100%;
-      height: 100%;
+      height: calc(100% + 60px);
       border: none;
     }
   </style>
 </head>
 <body>
-  <iframe 
-    src="https://script.google.com/a/macros/seikatsujyouhoukan.co.jp/s/AKfycby_r7WYE-pOjgBi729bOnHfTLo-hUIhLbMDfxZcKoLDdPZY2CW4wjnWn1iFynyK6I6m/exec"
-    allow="camera"
-    allowfullscreen>
-  </iframe>
+  <div class="iframe-wrapper">
+    <iframe 
+      src="https://script.google.com/a/macros/seikatsujyouhoukan.co.jp/s/AKfycby_r7WYE-pOjgBi729bOnHfTLo-hUIhLbMDfxZcKoLDdPZY2CW4wjnWn1iFynyK6I6m/exec"
+      allow="camera"
+      allowfullscreen>
+    </iframe>
+  </div>
 </body>
 </html>
