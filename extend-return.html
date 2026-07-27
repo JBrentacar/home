@@ -328,6 +328,23 @@
             border-radius: 12px;
         }
 
+        .pickup-notice-box {
+            background: #eef5ff;
+            border: 1.5px solid #0068e9;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 12.5px;
+            color: #0051b5;
+            line-height: 1.65;
+            margin-bottom: 14px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .pickup-notice-box i { flex-shrink: 0; margin-top: 2px; color: #0068e9; }
+        .pickup-notice-box strong { color: #003a80; }
+
         .pickup-time-notice {
             background: #fef0ee;
             border: 1.5px solid #e74c3c;
@@ -475,17 +492,21 @@
             <!-- 回収依頼チェックボックス -->
             <div class="field-group">
                 <label class="pickup-check-label">
-                    <input type="checkbox" id="pickup-check-2" name="回収依頼" value="出張にて回収依頼（有料）見積を依頼する" onchange="togglePickup2(this)">
+                    <input type="checkbox" id="pickup-check-2" name="回収見積希望" value="出張回収の見積を希望（料金・可否は別途連絡）" onchange="togglePickup2(this)">
                     <span class="custom-checkbox"></span>
                     <span>
-                        店舗に返却せず、指定先まで取りに来てほしい（出張回収・有料）
-                        <span class="pickup-sub">参考料金：仙台市内 税込8,800円／その他は要確認</span>
+                        店舗に返却せず、指定先まで取りに来てほしい（出張回収の見積を希望）
+                        <span class="pickup-sub">参考料金：仙台市内 税込8,800円／その他は要確認。料金・対応可否はスタッフより別途ご連絡します。</span>
                     </span>
                 </label>
             </div>
 
             <!-- 回収依頼展開エリア -->
             <div class="pickup-area" id="pickup-area-2" style="display:none;">
+                <div class="pickup-notice-box">
+                    <i class="fas fa-info-circle"></i>
+                    <span>まずは<strong>お見積りのご希望</strong>として承ります。料金や対応の可否は、後ほど<strong>スタッフよりご連絡</strong>いたします。</span>
+                </div>
                 <div class="pickup-time-notice">
                     <i class="fas fa-clock"></i>
                     対応時間：水曜を除く平日　10:00〜17:00
@@ -531,17 +552,21 @@
             <!-- 回収依頼チェックボックス -->
             <div class="field-group">
                 <label class="pickup-check-label">
-                    <input type="checkbox" id="pickup-check" name="回収依頼" value="出張にて回収依頼（有料）見積を依頼する" onchange="togglePickup(this)">
+                    <input type="checkbox" id="pickup-check" name="回収見積希望" value="出張回収の見積を希望（料金・可否は別途連絡）" onchange="togglePickup(this)">
                     <span class="custom-checkbox"></span>
                     <span>
-                        店舗に返却せず、指定先まで取りに来てほしい（出張回収・有料）
-                        <span class="pickup-sub">参考料金：仙台市内 税込8,800円／その他は要確認</span>
+                        店舗に返却せず、指定先まで取りに来てほしい（出張回収の見積を希望）
+                        <span class="pickup-sub">参考料金：仙台市内 税込8,800円／その他は要確認。料金・対応可否はスタッフより別途ご連絡します。</span>
                     </span>
                 </label>
             </div>
 
             <!-- 回収依頼展開エリア -->
             <div class="pickup-area" id="pickup-area" style="display:none;">
+                <div class="pickup-notice-box">
+                    <i class="fas fa-info-circle"></i>
+                    <span>まずは<strong>お見積りのご希望</strong>として承ります。料金や対応の可否は、後ほど<strong>スタッフよりご連絡</strong>いたします。</span>
+                </div>
                 <div class="pickup-time-notice">
                     <i class="fas fa-clock"></i>
                     対応時間：水曜を除く平日　10:00〜17:00
