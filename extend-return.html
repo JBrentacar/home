@@ -45,38 +45,61 @@
             padding: 20px 14px 60px;
         }
 
+        /* グループ見出し */
+        .group-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #667;
+            margin: 4px 4px 10px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .group-label .bar {
+            width: 4px;
+            height: 15px;
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .group-label.extend .bar { background: #0068e9; }
+        .group-label.finish .bar { background: #e74c3c; }
+
+        .group-label.finish { margin-top: 22px; }
+
         /* 選択カード */
         .choice-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 20px;
         }
 
         .choice-card {
             background: white;
             border: 2px solid #e0e6ef;
             border-radius: 14px;
-            padding: 16px 10px;
+            padding: 16px 12px;
             text-align: center;
             cursor: pointer;
             transition: all .2s;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 9px;
         }
 
         .choice-card:active { transform: scale(.97); }
 
-        .choice-card.selected-extend1 {
+        .choice-card.selected-extend1,
+        .choice-card.selected-extend2 {
             border-color: #0068e9;
             background: #eef5ff;
         }
 
-        .choice-card.selected-extend2 {
-            border-color: #0068e9;
-            background: #eef5ff;
+        .choice-card.selected-extend3 {
+            border-color: #e67e22;
+            background: #fff5eb;
         }
 
         .choice-card.selected-return {
@@ -85,25 +108,33 @@
         }
 
         .choice-icon {
-            width: 48px;
-            height: 48px;
+            width: 46px;
+            height: 46px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 19px;
             color: white;
         }
 
         .icon-blue   { background: linear-gradient(135deg, #0068e9, #0051b5); }
         .icon-indigo { background: linear-gradient(135deg, #6c5ce7, #4834d4); }
+        .icon-orange { background: linear-gradient(135deg, #e67e22, #d35400); }
         .icon-red    { background: linear-gradient(135deg, #e74c3c, #c0392b); }
 
         .choice-label {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 700;
             line-height: 1.35;
             color: #333;
+        }
+
+        .choice-sub {
+            font-size: 11px;
+            font-weight: 500;
+            line-height: 1.4;
+            color: #8a93a3;
         }
 
         /* フォームカード */
@@ -112,6 +143,7 @@
             border-radius: 16px;
             box-shadow: 0 4px 16px rgba(0,0,0,.08);
             padding: 24px 20px;
+            margin-top: 22px;
             display: none;
         }
 
@@ -128,6 +160,7 @@
         }
 
         .form-card-title i { color: #0068e9; }
+        .form-card-title.orange i { color: #e67e22; }
         .form-card-title.red i { color: #e74c3c; }
 
         .field-group {
@@ -199,6 +232,11 @@
         .submit-btn:active {
             transform: scale(.98);
             box-shadow: 0 2px 6px rgba(0,104,233,.3);
+        }
+
+        .submit-btn.orange-btn {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            box-shadow: 0 4px 12px rgba(230,126,34,.35);
         }
 
         .submit-btn.red-btn {
@@ -309,41 +347,65 @@
 <header>
     <img src="logo.png" alt="JBレンタカー石巻店">
     <h1>延長・返却のお手続き</h1>
-    <p>ご希望の内容をお知らせください</p>
+    <p>ご希望の内容をお選びください</p>
 </header>
 
 <main>
 
-    <!-- 選択カード -->
+    <!-- ▼ 延長グループ -->
+    <div class="group-label extend">
+        <span class="bar"></span>まだ利用を続ける方（延長）
+    </div>
+
     <div class="choice-grid">
 
         <div class="choice-card" onclick="selectChoice('extend1', this)">
             <div class="choice-icon icon-blue">
                 <i class="fas fa-redo"></i>
             </div>
-            <div class="choice-label">同条件で<br>延長</div>
+            <div class="choice-label">いつもの延長</div>
+            <div class="choice-sub">今と同じ条件で<br>延長する</div>
         </div>
 
         <div class="choice-card" onclick="selectChoice('extend2', this)">
             <div class="choice-icon icon-indigo">
                 <i class="fas fa-calendar-alt"></i>
             </div>
-            <div class="choice-label">期間変更<br>して延長</div>
+            <div class="choice-label">期間を変えて延長</div>
+            <div class="choice-sub">返却予定日を<br>先に延ばす</div>
+        </div>
+
+    </div>
+
+    <!-- ▼ 返却グループ -->
+    <div class="group-label finish">
+        <span class="bar"></span>今回で終わりにする方（返却）
+    </div>
+
+    <div class="choice-grid">
+
+        <div class="choice-card" onclick="selectChoice('extend3', this)">
+            <div class="choice-icon icon-orange">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="choice-label">この日まで延長して返却</div>
+            <div class="choice-sub">延長したうえで<br>返却日も確定する</div>
         </div>
 
         <div class="choice-card" onclick="selectChoice('return', this)">
             <div class="choice-icon icon-red">
                 <i class="fas fa-car-side"></i>
             </div>
-            <div class="choice-label">返却する</div>
+            <div class="choice-label">すぐ返却する</div>
+            <div class="choice-sub">延長せず<br>このまま返す</div>
         </div>
 
     </div>
 
-    <!-- 同条件で延長フォーム -->
+    <!-- いつもの延長フォーム -->
     <div class="form-card" id="form-extend1">
         <div class="form-card-title">
-            <i class="fas fa-redo"></i> 現在の契約内容で延長
+            <i class="fas fa-redo"></i> いつもの延長（同条件）
         </div>
         <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
             <input type="hidden" name="契約状況" value="現在の契約内容で延長を希望">
@@ -357,14 +419,14 @@
         </form>
         <div class="notice">
             <i class="fas fa-info-circle"></i>
-            <span>現在の料金・車両・返却場所と同じ条件で延長いたします。変更がある場合は「期間変更して延長」をお選びください。</span>
+            <span>現在の料金・車両・返却場所と同じ条件で延長いたします。条件を変えたい場合は「期間を変えて延長」をお選びください。</span>
         </div>
     </div>
 
-    <!-- 期間変更して延長フォーム -->
+    <!-- 期間を変えて延長フォーム -->
     <div class="form-card" id="form-extend2">
         <div class="form-card-title">
-            <i class="fas fa-calendar-alt"></i> 利用期間を変更して延長
+            <i class="fas fa-calendar-alt"></i> 期間を変えて延長
         </div>
         <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
             <input type="hidden" name="契約状況" value="利用期間を変更して延長を希望">
@@ -375,7 +437,7 @@
             <div class="field-group">
                 <label>新しい返却予定日時</label>
                 <input type="text" name="備考" placeholder="例）3月20日 15時" required>
-                <div class="field-hint">延長後の返却希望日・時間をご記入ください</div>
+                <div class="field-hint">延長後の返却希望日・時間をご記入ください（あとから再延長も可能です）</div>
             </div>
             <button type="submit" class="submit-btn">
                 <i class="fas fa-paper-plane"></i> 送信する
@@ -383,10 +445,36 @@
         </form>
     </div>
 
-    <!-- 返却フォーム -->
+    <!-- この日まで延長して返却フォーム -->
+    <div class="form-card" id="form-extend3">
+        <div class="form-card-title orange">
+            <i class="fas fa-calendar-check"></i> この日まで延長して返却
+        </div>
+        <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
+            <input type="hidden" name="契約状況" value="延長し、返却日を確定して希望">
+            <div class="field-group">
+                <label>ご契約者名</label>
+                <input type="text" name="ご契約者名" placeholder="例）石巻 太郎" required>
+            </div>
+            <div class="field-group">
+                <label>延長して返却する日時</label>
+                <input type="text" name="備考" placeholder="例）3月25日 12時" required>
+                <div class="field-hint">この日時まで延長し、そのまま返却として確定いたします</div>
+            </div>
+            <button type="submit" class="submit-btn orange-btn">
+                <i class="fas fa-paper-plane"></i> 送信する
+            </button>
+        </form>
+        <div class="notice">
+            <i class="fas fa-info-circle"></i>
+            <span>ご記入の日時まで延長したうえで、その日で返却を確定いたします。「もう再延長の予定はない」という方はこちらが便利です。</span>
+        </div>
+    </div>
+
+    <!-- すぐ返却フォーム -->
     <div class="form-card" id="form-return">
         <div class="form-card-title red">
-            <i class="fas fa-car-side"></i> 返却のご連絡
+            <i class="fas fa-car-side"></i> すぐ返却する
         </div>
         <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
             <input type="hidden" name="契約状況" value="延長せず、返却を希望">
@@ -444,11 +532,9 @@
 </footer>
 
 <script>
-    let selectedCard = null;
-
     function selectChoice(type, el) {
         document.querySelectorAll('.choice-card').forEach(c => {
-            c.classList.remove('selected-extend1', 'selected-extend2', 'selected-return');
+            c.classList.remove('selected-extend1', 'selected-extend2', 'selected-extend3', 'selected-return');
         });
         document.querySelectorAll('.form-card').forEach(f => f.classList.remove('visible'));
         el.classList.add('selected-' + type);
