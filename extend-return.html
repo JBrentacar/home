@@ -264,10 +264,10 @@
         /* 回収依頼エリア */
         .pickup-check-label {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             color: #c0392b;
             background: #fef0ee;
@@ -275,6 +275,7 @@
             border-radius: 12px;
             padding: 14px 16px;
             user-select: none;
+            line-height: 1.45;
         }
 
         .pickup-check-label input[type="checkbox"] {
@@ -292,6 +293,7 @@
             align-items: center;
             justify-content: center;
             transition: all .2s;
+            margin-top: 1px;
         }
 
         .pickup-check-label input[type="checkbox"]:checked + .custom-checkbox {
@@ -308,6 +310,14 @@
             border-top: none;
             border-left: none;
             transform: rotate(45deg) translateY(-2px);
+        }
+
+        .pickup-sub {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: #a05656;
+            margin-top: 3px;
         }
 
         .pickup-area {
@@ -461,7 +471,37 @@
                 <input type="text" name="備考" placeholder="例）3月25日 12時" required>
                 <div class="field-hint">この日時まで延長し、そのまま返却として確定いたします</div>
             </div>
-            <button type="submit" class="submit-btn orange-btn">
+
+            <!-- 回収依頼チェックボックス -->
+            <div class="field-group">
+                <label class="pickup-check-label">
+                    <input type="checkbox" id="pickup-check-2" name="回収依頼" value="出張にて回収依頼（有料）見積を依頼する" onchange="togglePickup2(this)">
+                    <span class="custom-checkbox"></span>
+                    <span>
+                        店舗に返却せず、指定先まで取りに来てほしい（出張回収・有料）
+                        <span class="pickup-sub">参考料金：仙台市内 税込8,800円／その他は要確認</span>
+                    </span>
+                </label>
+            </div>
+
+            <!-- 回収依頼展開エリア -->
+            <div class="pickup-area" id="pickup-area-2" style="display:none;">
+                <div class="pickup-time-notice">
+                    <i class="fas fa-clock"></i>
+                    対応時間：水曜を除く平日　10:00〜17:00
+                </div>
+                <div class="field-group">
+                    <label>回収希望先 郵便番号</label>
+                    <input type="text" id="zipcode-2" name="郵便番号" placeholder="例）9860814" maxlength="8" inputmode="numeric" style="max-width:200px;">
+                    <div class="field-hint">ハイフンなしで入力してください</div>
+                </div>
+                <div class="field-group" style="margin-bottom:0;">
+                    <label>回収希望先 住所</label>
+                    <input type="text" id="address-2" name="回収希望先住所" placeholder="郵便番号を入力すると自動入力されます">
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn orange-btn" style="margin-top:16px;">
                 <i class="fas fa-paper-plane"></i> 送信する
             </button>
         </form>
@@ -493,7 +533,10 @@
                 <label class="pickup-check-label">
                     <input type="checkbox" id="pickup-check" name="回収依頼" value="出張にて回収依頼（有料）見積を依頼する" onchange="togglePickup(this)">
                     <span class="custom-checkbox"></span>
-                    出張にて回収依頼（有料）見積を依頼する
+                    <span>
+                        店舗に返却せず、指定先まで取りに来てほしい（出張回収・有料）
+                        <span class="pickup-sub">参考料金：仙台市内 税込8,800円／その他は要確認</span>
+                    </span>
                 </label>
             </div>
 
@@ -547,6 +590,10 @@
         document.getElementById('pickup-area').style.display = cb.checked ? 'block' : 'none';
     }
 
+    function togglePickup2(cb) {
+        document.getElementById('pickup-area-2').style.display = cb.checked ? 'block' : 'none';
+    }
+
     document.getElementById('zipcode').addEventListener('input', function() {
         const zip = this.value.replace(/[^0-9]/g, '');
         this.value = zip;
@@ -557,6 +604,22 @@
                     if (data.results) {
                         const r = data.results[0];
                         document.getElementById('address').value = r.address1 + r.address2 + r.address3;
+                    }
+                })
+                .catch(() => {});
+        }
+    });
+
+    document.getElementById('zipcode-2').addEventListener('input', function() {
+        const zip = this.value.replace(/[^0-9]/g, '');
+        this.value = zip;
+        if (zip.length === 7) {
+            fetch('https://zipcloud.ibsnet.co.jp/api/search?zipcode=' + zip)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.results) {
+                        const r = data.results[0];
+                        document.getElementById('address-2').value = r.address1 + r.address2 + r.address3;
                     }
                 })
                 .catch(() => {});
