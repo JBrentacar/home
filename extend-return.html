@@ -234,6 +234,11 @@
             box-shadow: 0 2px 6px rgba(0,104,233,.3);
         }
 
+        .submit-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
         .submit-btn.orange-btn {
             background: linear-gradient(135deg, #e67e22, #d35400);
             box-shadow: 0 4px 12px rgba(230,126,34,.35);
@@ -434,7 +439,7 @@
         <div class="form-card-title">
             <i class="fas fa-redo"></i> いつもの延長（同条件）
         </div>
-        <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
+        <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post" data-kind="いつもの延長（同条件）">
             <input type="hidden" name="契約状況" value="現在の契約内容で延長を希望">
             <div class="field-group">
                 <label>ご契約者名</label>
@@ -455,7 +460,7 @@
         <div class="form-card-title">
             <i class="fas fa-calendar-alt"></i> 期間を変えて延長
         </div>
-        <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
+        <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post" data-kind="期間を変えて延長">
             <input type="hidden" name="契約状況" value="利用期間を変更して延長を希望">
             <div class="field-group">
                 <label>ご契約者名</label>
@@ -477,7 +482,7 @@
         <div class="form-card-title orange">
             <i class="fas fa-calendar-check"></i> この日まで延長して返却
         </div>
-        <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
+        <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post" data-kind="延長して返却（返却日確定）">
             <input type="hidden" name="契約状況" value="延長し、返却日を確定して希望">
             <div class="field-group">
                 <label>ご契約者名</label>
@@ -537,7 +542,7 @@
         <div class="form-card-title red">
             <i class="fas fa-car-side"></i> すぐ返却する
         </div>
-        <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post">
+        <form action="https://ssgform.com/s/sRQIv0YeO3pA" method="post" data-kind="すぐ返却">
             <input type="hidden" name="契約状況" value="延長せず、返却を希望">
             <div class="field-group">
                 <label>ご契約者名</label>
@@ -598,6 +603,69 @@
     &copy; 2025 JBレンタカー石巻店<br>
     0120-204-625
 </footer>
+
+<!-- Firebase 保存処理（送信時にFirestoreへ保存してからSSGフォームへ送信） -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp }
+        from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAsjuxTQRPx7LoaIcFsu0mYF_3PR9NKkEc",
+        authDomain: "jb-rentacar.firebaseapp.com",
+        projectId: "jb-rentacar",
+        storageBucket: "jb-rentacar.firebasestorage.app",
+        messagingSenderId: "260306920043",
+        appId: "1:260306920043:web:c0742d3fc0c585cc55872e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const appsCol = collection(db, "rentacar", "applications", "items");
+
+    // すべてのフォームに「保存してから送信」を仕込む
+    document.querySelectorAll("form[action^='https://ssgform.com']").forEach(form => {
+        form.addEventListener("submit", async (e) => {
+            // すでに保存済みフラグが立っていれば、そのまま通常送信させる
+            if (form.dataset.saved === "1") return;
+
+            // まずは通常送信を止めて、先にFirestore保存を試みる
+            e.preventDefault();
+
+            const btn = form.querySelector("button[type=submit]");
+            if (btn) btn.disabled = true;
+
+            // フォーム内容を収集
+            const fd = new FormData(form);
+            const rec = {
+                手続き種別: form.dataset.kind || "",
+                契約状況: fd.get("契約状況") || "",
+                契約者名: (fd.get("ご契約者名") || "").toString().trim(),
+                希望日時: (fd.get("備考") || "").toString().trim(),
+                回収見積希望: fd.get("回収見積希望") ? "希望あり" : "",
+                郵便番号: (fd.get("郵便番号") || "").toString().trim(),
+                回収希望先住所: (fd.get("回収希望先住所") || "").toString().trim(),
+                対応状況: "未対応",
+                受付日時: serverTimestamp()
+            };
+
+            try {
+                // Firestoreへ保存（最大3秒でタイムアウトさせ、遅くても送信は必ず実行）
+                await Promise.race([
+                    addDoc(appsCol, rec),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 3000))
+                ]);
+            } catch (err) {
+                // 保存に失敗しても、メール通知（SSGフォーム）は必ず飛ばす
+                console.warn("Firestore保存に失敗（送信は続行します）", err);
+            }
+
+            // 保存の成否にかかわらず、本来のSSGフォーム送信を実行
+            form.dataset.saved = "1";
+            form.submit();
+        });
+    });
+</script>
 
 <script>
     function selectChoice(type, el) {
