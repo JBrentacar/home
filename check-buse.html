@@ -7,211 +7,35 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-      background: #f0f4f8;
-      color: #333;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    header {
-      background: linear-gradient(135deg, #0068e9, #0051b5);
-      padding: 20px 16px 24px;
-      text-align: center;
-      color: white;
-    }
-
+    body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #f0f4f8; color: #333; -webkit-font-smoothing: antialiased; }
+    header { background: linear-gradient(135deg, #0068e9, #0051b5); padding: 20px 16px 24px; text-align: center; color: white; }
     header img { max-width: 90px; margin-bottom: 8px; }
     header h1 { font-size: 19px; font-weight: 700; letter-spacing: .05em; }
     header p { font-size: 13px; opacity: .85; margin-top: 4px; }
-
-    main {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px 14px 60px;
-    }
-
-    /* 規約カード */
-    .terms-card {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,.08);
-      padding: 20px 18px;
-      margin-bottom: 16px;
-    }
-
-    .card-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #333;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    main { max-width: 600px; margin: 0 auto; padding: 20px 14px 60px; }
+    .terms-card { background: white; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,.08); padding: 20px 18px; margin-bottom: 16px; }
+    .card-title { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
     .card-title i { color: #0068e9; }
-
-    /* チェック項目 */
-    .term-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid #f0f4f8;
-      cursor: pointer;
-    }
-
+    .term-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f0f4f8; cursor: pointer; }
     .term-item:last-child { border-bottom: none; }
-
-    .term-item input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-      margin-top: 1px;
-      accent-color: #0068e9;
-      cursor: pointer;
-    }
-
-    .term-text {
-      font-size: 13px;
-      color: #444;
-      line-height: 1.75;
-    }
-
-    /* 進捗バー */
-    .progress-wrap {
-      background: #e8edf5;
-      border-radius: 99px;
-      height: 6px;
-      margin-bottom: 6px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #0068e9, #48cae4);
-      border-radius: 99px;
-      width: 0%;
-      transition: width .3s;
-    }
-
-    .progress-label {
-      font-size: 12px;
-      color: #999;
-      margin-bottom: 14px;
-    }
-
-    /* フォームカード */
-    .form-card {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,.08);
-      padding: 22px 18px;
-      margin-bottom: 16px;
-    }
-
+    .term-item input[type="checkbox"] { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; accent-color: #0068e9; cursor: pointer; }
+    .term-text { font-size: 13px; color: #444; line-height: 1.75; }
+    .progress-wrap { background: #e8edf5; border-radius: 99px; height: 6px; margin-bottom: 6px; overflow: hidden; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, #0068e9, #48cae4); border-radius: 99px; width: 0%; transition: width .3s; }
+    .progress-label { font-size: 12px; color: #999; margin-bottom: 14px; }
+    .form-card { background: white; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,.08); padding: 22px 18px; margin-bottom: 16px; }
     .field-group { margin-bottom: 14px; }
-
-    .field-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 700;
-      color: #555;
-      margin-bottom: 6px;
-    }
-
-    .field-group input[type="text"] {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1.5px solid #dde3ec;
-      border-radius: 10px;
-      font-size: 15px;
-      font-family: inherit;
-      color: #333;
-      background: #fafbfd;
-      transition: border-color .2s, box-shadow .2s;
-      -webkit-appearance: none;
-    }
-
-    .field-group input[type="text"]:focus {
-      outline: none;
-      border-color: #0068e9;
-      box-shadow: 0 0 0 3px rgba(0,104,233,.15);
-      background: white;
-    }
-
-    /* 署名パッド */
-    .sig-wrap {
-      border: 1.5px solid #dde3ec;
-      border-radius: 10px;
-      overflow: hidden;
-      background: white;
-      margin-bottom: 8px;
-    }
-
-    #signature-pad {
-      width: 100%;
-      height: 160px;
-      display: block;
-      touch-action: none;
-    }
-
-    .clear-btn {
-      background: none;
-      border: 1.5px solid #e74c3c;
-      color: #e74c3c;
-      border-radius: 8px;
-      padding: 7px 16px;
-      font-size: 13px;
-      font-family: inherit;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background .2s, color .2s;
-    }
-
+    .field-group label { display: block; font-size: 13px; font-weight: 700; color: #555; margin-bottom: 6px; }
+    .field-group input[type="text"] { width: 100%; padding: 12px 14px; border: 1.5px solid #dde3ec; border-radius: 10px; font-size: 15px; font-family: inherit; color: #333; background: #fafbfd; transition: border-color .2s, box-shadow .2s; -webkit-appearance: none; }
+    .field-group input[type="text"]:focus { outline: none; border-color: #0068e9; box-shadow: 0 0 0 3px rgba(0,104,233,.15); background: white; }
+    .sig-wrap { border: 1.5px solid #dde3ec; border-radius: 10px; overflow: hidden; background: white; margin-bottom: 8px; }
+    #signature-pad { width: 100%; height: 160px; display: block; touch-action: none; }
+    .clear-btn { background: none; border: 1.5px solid #e74c3c; color: #e74c3c; border-radius: 8px; padding: 7px 16px; font-size: 13px; font-family: inherit; font-weight: 700; cursor: pointer; transition: background .2s, color .2s; }
     .clear-btn:active { background: #fef0ee; }
-
-    /* 送信ボタン */
-    .submit-btn {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #0068e9, #0051b5);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,104,233,.35);
-      transition: transform .2s, box-shadow .2s, opacity .2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .submit-btn:disabled {
-      opacity: .45;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    .submit-btn:not(:disabled):active {
-      transform: scale(.98);
-      box-shadow: 0 2px 6px rgba(0,104,233,.3);
-    }
-
-    footer {
-      background: linear-gradient(135deg, #0068e9, #0051b5);
-      color: white;
-      text-align: center;
-      padding: 18px;
-      font-size: 13px;
-      line-height: 1.8;
-    }
+    .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #0068e9, #0051b5); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,233,.35); transition: transform .2s, box-shadow .2s, opacity .2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .submit-btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+    .submit-btn:not(:disabled):active { transform: scale(.98); box-shadow: 0 2px 6px rgba(0,104,233,.3); }
+    footer { background: linear-gradient(135deg, #0068e9, #0051b5); color: white; text-align: center; padding: 18px; font-size: 13px; line-height: 1.8; }
   </style>
 </head>
 <body>
@@ -223,53 +47,22 @@
 </header>
 
 <main>
+  <form id="terms-form" onsubmit="return false;">
 
-  <form id="terms-form" action="https://ssgform.com/s/As8sidpiQhy1" method="POST" onsubmit="return false;">
-
-    <!-- 規約チェック -->
     <div class="terms-card">
       <div class="card-title"><i class="fas fa-file-contract"></i> 利用規約の確認</div>
-
       <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
       <div class="progress-label" id="progressLabel">0 / 7 項目確認済み</div>
 
-      <label class="term-item">
-        <input type="checkbox" name="term1">
-        <span class="term-text">燃料は満タン貸出・満タン返却です。（配車サービスご利用の場合、出発時満タンとしております。到着時満タンでない場合はご了承ください。）</span>
-      </label>
-
-      <label class="term-item">
-        <input type="checkbox" name="term2">
-        <span class="term-text">走行距離について：1日300km、1週間1,000km、14〜30日間3,000kmの制限があります。超過時は1km10円で追加請求いたします。</span>
-      </label>
-
-      <label class="term-item">
-        <input type="checkbox" name="term3">
-        <span class="term-text">賃貸期間2日を超える場合、お客様ご自身での日常点検をお願いします。3カ月以上または3,000km以上走行された場合、お客様負担でのオイル交換が必須となります。</span>
-      </label>
-
-      <label class="term-item">
-        <input type="checkbox" name="term4">
-        <span class="term-text">ご延長の場合、返却予定日の2週間前を目安にご連絡ください。</span>
-      </label>
-
-      <label class="term-item">
-        <input type="checkbox" name="term5">
-        <span class="term-text">ペットの同乗・車内喫煙はご遠慮いただいております。また、過度な汚れが残っていた場合、特別清掃料金20,000円をいただきます。</span>
-      </label>
-
-      <label class="term-item">
-        <input type="checkbox" name="term6">
-        <span class="term-text">事故・故障時には備え付けファイルより保険会社に連絡・対応ください。警察および当社への連絡等所定の手続きが取られていない場合、保険補償制度の適用はできません。</span>
-      </label>
-
-      <label class="term-item">
-        <input type="checkbox" name="term7">
-        <span class="term-text">車検時・タイヤ履替時には、指定工場（石巻市内）もしくはJBレンタカー石巻店へのご来店が必要となります。</span>
-      </label>
+      <label class="term-item"><input type="checkbox" name="term1"><span class="term-text">燃料は満タン貸出・満タン返却です。（配車サービスご利用の場合、出発時満タンとしております。到着時満タンでない場合はご了承ください。）</span></label>
+      <label class="term-item"><input type="checkbox" name="term2"><span class="term-text">走行距離について：1日300km、1週間1,000km、14〜30日間3,000kmの制限があります。超過時は1km10円で追加請求いたします。</span></label>
+      <label class="term-item"><input type="checkbox" name="term3"><span class="term-text">賃貸期間2日を超える場合、お客様ご自身での日常点検をお願いします。3カ月以上または3,000km以上走行された場合、お客様負担でのオイル交換が必須となります。</span></label>
+      <label class="term-item"><input type="checkbox" name="term4"><span class="term-text">ご延長の場合、返却予定日の2週間前を目安にご連絡ください。</span></label>
+      <label class="term-item"><input type="checkbox" name="term5"><span class="term-text">ペットの同乗・車内喫煙はご遠慮いただいております。また、過度な汚れが残っていた場合、特別清掃料金20,000円をいただきます。</span></label>
+      <label class="term-item"><input type="checkbox" name="term6"><span class="term-text">事故・故障時には備え付けファイルより保険会社に連絡・対応ください。警察および当社への連絡等所定の手続きが取られていない場合、保険補償制度の適用はできません。</span></label>
+      <label class="term-item"><input type="checkbox" name="term7"><span class="term-text">車検時・タイヤ履替時には、指定工場（石巻市内）もしくはJBレンタカー石巻店へのご来店が必要となります。</span></label>
     </div>
 
-    <!-- 契約者名 -->
     <div class="form-card">
       <div class="card-title"><i class="fas fa-user"></i> 契約者情報</div>
       <div class="field-group">
@@ -278,25 +71,19 @@
       </div>
     </div>
 
-    <!-- 署名 -->
     <div class="form-card">
       <div class="card-title"><i class="fas fa-pen"></i> 署名</div>
       <div class="field-group" style="margin-bottom:10px;">
         <label>フルネームでご署名ください <span style="color:#e74c3c;">*</span></label>
-        <div class="sig-wrap">
-          <canvas id="signature-pad"></canvas>
-        </div>
+        <div class="sig-wrap"><canvas id="signature-pad"></canvas></div>
         <button type="button" class="clear-btn" id="clear"><i class="fas fa-eraser"></i> クリア</button>
-        <input type="hidden" name="署名" id="signature-data" required>
       </div>
     </div>
 
     <button type="button" class="submit-btn" id="submit-btn" disabled onclick="submitWithSignature()">
       <i class="fas fa-paper-plane"></i> 同意して送信する
     </button>
-
   </form>
-
 </main>
 
 <footer>
@@ -304,7 +91,24 @@
   0120-204-625
 </footer>
 
-<script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+  import { getStorage, ref, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-storage.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAsjuxTQRPx7LoaIcFsu0mYF_3PR9NKkEc",
+    authDomain: "jb-rentacar.firebaseapp.com",
+    projectId: "jb-rentacar",
+    storageBucket: "jb-rentacar.firebasestorage.app",
+    messagingSenderId: "260306920043",
+    appId: "1:260306920043:web:c0742d3fc0c585cc55872e"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
   // 署名パッド
   const canvas = document.getElementById('signature-pad');
   const ctx = canvas.getContext('2d');
@@ -324,7 +128,6 @@
     ctx.lineJoin = 'round';
     ctx.strokeStyle = '#1a1a2e';
   }
-
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
@@ -334,21 +137,19 @@
     const r = canvas.getBoundingClientRect();
     ctx.moveTo(e.clientX - r.left, e.clientY - r.top);
   });
-
   canvas.addEventListener('pointermove', e => {
     if (!drawing) return;
     const r = canvas.getBoundingClientRect();
     ctx.lineTo(e.clientX - r.left, e.clientY - r.top);
     ctx.stroke();
   });
-
   ['pointerup', 'pointercancel'].forEach(ev => canvas.addEventListener(ev, () => drawing = false));
 
   document.getElementById('clear').addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   });
 
-  async function submitWithSignature() {
+  window.submitWithSignature = async function () {
     // 署名が空かチェック
     const blank = document.createElement('canvas');
     blank.width = canvas.width; blank.height = canvas.height;
@@ -357,37 +158,47 @@
       return;
     }
 
+    const contractorName = document.getElementById('contractor-name').value.trim();
+    if (!contractorName) { alert('契約者名を入力してください。'); return; }
+
     const btn = document.getElementById('submit-btn');
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
 
     try {
-      // imgbbに署名画像をアップロード
-      const base64 = canvas.toDataURL('image/png').split(',')[1];
-      const formData = new FormData();
-      formData.append('image', base64);
-      const res = await fetch('https://api.imgbb.com/1/upload?key=8f8fdbe7d09c66448c9f901c65f2bca5', {
-        method: 'POST', body: formData
+      // 署名画像を Firebase Storage に保存
+      const prefix = Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+      const sigPath = `signatures/${prefix}.png`;
+      const dataUrl = canvas.toDataURL('image/png');
+      await uploadString(ref(storage, sigPath), dataUrl, 'data_url');
+
+      // Firestore に保存
+      await addDoc(collection(db, "rentacar", "agreements", "items"), {
+        "契約者名": contractorName,
+        "同意": true,
+        "署名パス": sigPath,
+        "対応状況": "未対応",
+        "受付日時": serverTimestamp()
       });
-      const json = await res.json();
 
-      if (!json.success) throw new Error('imgbb upload failed');
-
-      const imgUrl = json.data.url;
-      document.getElementById('signature-data').value = imgUrl;
-
-      // SSGFormに送信
-      const sf = new FormData(document.getElementById('terms-form'));
-      await fetch('https://ssgform.com/s/As8sidpiQhy1', { method: 'POST', body: sf });
+      // ssgform に通知（失敗しても本体は止めない）
+      try {
+        const sf = new FormData();
+        sf.append("契約者名", contractorName);
+        sf.append("同意", "全7項目に同意");
+        await fetch('https://ssgform.com/s/As8sidpiQhy1', { method: 'POST', mode: 'no-cors', body: sf });
+      } catch (ssgErr) {
+        console.error("ssgform通知エラー:", ssgErr);
+      }
 
       window.location.href = 'https://jbrentacar.github.io/done/check-buse.html';
 
     } catch (e) {
-      alert('送信に失敗しました。通信状況を確認して再度お試しください。');
+      alert('送信に失敗しました。通信状況を確認して再度お試しください。\n' + e.message);
       btn.disabled = false;
       btn.innerHTML = '<i class="fas fa-paper-plane"></i> 同意して送信する';
     }
-  }
+  };
 
   // 進捗・送信ボタン制御
   const checkboxes = document.querySelectorAll('.terms-card input[type="checkbox"]');
@@ -406,7 +217,6 @@
     const nameFilled = nameInput.value.trim() !== '';
     submitBtn.disabled = !(allChecked && nameFilled);
   }
-
   checkboxes.forEach(cb => cb.addEventListener('change', updateState));
   nameInput.addEventListener('input', updateState);
 </script>
