@@ -218,22 +218,20 @@ document.getElementById('applicationForm').addEventListener('submit', async func
     const frontRef=ref(storage,`licenses/${prefix}_front.jpg`);
     const backRef=ref(storage,`licenses/${prefix}_back.jpg`);
 
-    await uploadBytes(frontRef, frontBlob, { contentType:'image/jpeg' });
+        await uploadBytes(frontRef, frontBlob, { contentType:'image/jpeg' });
     await uploadBytes(backRef, backBlob, { contentType:'image/jpeg' });
-
-    const frontUrl=await getDownloadURL(frontRef);
-    const backUrl=await getDownloadURL(backRef);
 
     await addDoc(collection(db,'rentacar','driverApplications','items'), {
       "契約者名": contractorName,
       "運転者名": driverName,
       "運転者電話番号": driverPhone,
       "運転者住所": driverAddress,
-      "免許証表URL": frontUrl,
-      "免許証裏URL": backUrl,
+      "免許証表パス": `licenses/${prefix}_front.jpg`,
+      "免許証裏パス": `licenses/${prefix}_back.jpg`,
       "対応状況": "未対応",
       "受付日時": serverTimestamp()
     });
+
 
     spinner.style.display='none';
     document.getElementById('applicationForm').style.display='none';
