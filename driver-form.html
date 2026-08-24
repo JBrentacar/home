@@ -2,37 +2,286 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <title>運転者申請フォーム - JBレンタカー石巻店</title>
   <style>
-    * { margin: 0; padding: 0; }
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      background: #f0f4f8;
-    }
-    .iframe-wrapper {
-      position: fixed;
-      top: -30px;
-      left: 0;
-      right: 0;
-      bottom: -30px;
-      overflow: hidden;
-    }
-    iframe {
-      width: 100%;
-      height: calc(100% + 60px);
-      border: none;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif; background:#f0f4f8; color:#333; -webkit-font-smoothing:antialiased; }
+    header { background:linear-gradient(135deg,#0068e9,#0051b5); padding:20px 16px 24px; text-align:center; color:white; }
+    header h1 { font-size:20px; font-weight:700; letter-spacing:.05em; }
+    header p { font-size:13px; opacity:.85; margin-top:4px; }
+    main { max-width:600px; margin:0 auto; padding:20px 14px 60px; }
+    .notice-card { background:white; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,.07); padding:16px 18px; margin-bottom:16px; border-left:4px solid #e74c3c; font-size:13px; line-height:1.7; color:#555; }
+    .notice-card strong { color:#e74c3c; }
+    .form-card { background:white; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,.1); padding:24px 20px; margin-bottom:16px; }
+    .section-label { font-size:12px; font-weight:700; color:#999; letter-spacing:.1em; text-transform:uppercase; margin-bottom:14px; }
+    .form-group { margin-bottom:18px; }
+    .form-group:last-child { margin-bottom:0; }
+    label { display:block; font-weight:700; margin-bottom:6px; font-size:13px; color:#444; }
+    label .req { color:#e74c3c; margin-left:4px; font-size:11px; }
+    input[type="text"], input[type="tel"] { width:100%; padding:12px 14px; border:1px solid #ddd; border-radius:10px; font-size:15px; transition:border-color .3s,box-shadow .3s; background:#f8f9fa; }
+    input[type="text"]:focus, input[type="tel"]:focus { outline:none; border-color:#0068e9; box-shadow:0 0 0 3px rgba(0,104,233,.15); background:white; }
+    .file-upload-area { border:2px dashed #ccc; border-radius:12px; padding:20px; text-align:center; cursor:pointer; transition:all .3s; background:#f8f9fa; }
+    .file-upload-area:hover { border-color:#0068e9; background:#e8f4fd; }
+    .file-upload-area.has-file { border-color:#28a745; background:#f0fff4; }
+    .file-upload-area i.upload-icon { font-size:28px; color:#bbb; margin-bottom:8px; }
+    .file-upload-area.has-file i.upload-icon { display:none; }
+    .file-upload-area p { font-size:12px; color:#999; }
+    .file-upload-area .file-name { font-size:13px; color:#28a745; font-weight:700; }
+    .file-upload-area img.preview { max-width:180px; max-height:120px; margin-top:8px; border-radius:8px; }
+    input[type="file"] { display:none; }
+    .submit-btn { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:18px 24px; background:linear-gradient(135deg,#0068e9,#0051b5); color:white; border:none; border-radius:12px; font-size:17px; font-weight:700; cursor:pointer; box-shadow:0 6px 16px rgba(0,104,233,.35); transition:transform .2s,box-shadow .2s; }
+    .submit-btn:hover { box-shadow:0 8px 20px rgba(0,104,233,.4); }
+    .submit-btn:active { transform:scale(.98); }
+    .submit-btn:disabled { background:#aab; box-shadow:none; cursor:not-allowed; }
+    .spinner { display:none; text-align:center; padding:30px; }
+    .spinner::after { content:''; display:inline-block; width:36px; height:36px; border:3px solid #ddd; border-top-color:#0068e9; border-radius:50%; animation:spin .8s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .spinner-text { margin-top:12px; font-size:14px; color:#666; }
+    .result-message { display:none; text-align:center; padding:40px 20px; background:white; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,.1); }
+    .result-message .result-icon { font-size:52px; margin-bottom:12px; }
+    .result-message.success .result-icon { color:#28a745; }
+    .result-message.error .result-icon { color:#e74c3c; }
+    .result-message h2 { margin:0 0 8px; font-size:20px; }
+    .result-message p { font-size:14px; color:#666; margin-bottom:24px; }
+    .again-btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:14px 32px; background:linear-gradient(135deg,#52b788,#2d6a4f); color:white; border:none; border-radius:12px; font-size:15px; font-weight:700; cursor:pointer; box-shadow:0 4px 12px rgba(45,106,79,.35); transition:transform .2s,box-shadow .2s; text-decoration:none; }
+    .again-btn:hover { box-shadow:0 6px 16px rgba(45,106,79,.4); }
+    .again-btn:active { transform:scale(.98); }
+    .home-link { display:block; margin-top:14px; font-size:13px; color:#0068e9; text-decoration:none; }
+    .home-link:hover { text-decoration:underline; }
+    footer { background:linear-gradient(135deg,#0068e9,#0051b5); color:white; text-align:center; padding:16px; font-size:12px; opacity:.95; }
   </style>
 </head>
 <body>
-  <div class="iframe-wrapper">
-    <iframe 
-      src="https://script.google.com/a/macros/seikatsujyouhoukan.co.jp/s/AKfycby_r7WYE-pOjgBi729bOnHfTLo-hUIhLbMDfxZcKoLDdPZY2CW4wjnWn1iFynyK6I6m/exec"
-      allow="camera"
-      allowfullscreen>
-    </iframe>
+
+<header>
+  <h1><i class="fas fa-id-card" style="margin-right:8px;"></i>運転者申請フォーム</h1>
+  <p>JBレンタカー石巻店</p>
+</header>
+
+<main>
+  <div class="notice-card">
+    <i class="fas fa-exclamation-triangle" style="color:#e74c3c;margin-right:6px;"></i>
+    ご登録いただいていない方の運転による事故等は、<strong>補償の対象外</strong>となりますので、ご注意ください。<br>
+    運転者が複数いる場合は、お手数ですが<strong>都度申請</strong>をお願い致します。
   </div>
+
+  <form id="applicationForm">
+    <div class="form-card">
+      <div class="section-label"><i class="fas fa-user" style="margin-right:6px;"></i>契約者情報</div>
+      <div class="form-group">
+        <label for="contractorName">ご契約者名<span class="req">必須</span></label>
+        <input type="text" id="contractorName" required placeholder="例：山田 太郎">
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-label"><i class="fas fa-id-card" style="margin-right:6px;"></i>運転者情報</div>
+      <div class="form-group">
+        <label for="driverName">運転者名<span class="req">必須</span></label>
+        <input type="text" id="driverName" required placeholder="例：鈴木 花子">
+      </div>
+      <div class="form-group">
+        <label for="driverPhone">運転者電話番号<span class="req">必須</span></label>
+        <input type="tel" id="driverPhone" required placeholder="例：090-1234-5678">
+      </div>
+      <div class="form-group">
+        <label for="driverAddress">運転者住所<span class="req">必須</span></label>
+        <input type="text" id="driverAddress" required placeholder="例：宮城県石巻市○○1-2-3">
+      </div>
+      <div class="form-group">
+        <label>運転免許証（表）<span class="req">必須</span></label>
+        <div class="file-upload-area" id="frontArea" onclick="document.getElementById('licenseFront').click()">
+          <i class="fas fa-cloud-upload-alt upload-icon"></i>
+          <p>タップして画像を選択<br><small>予め撮影した免許証の画像をお選びください</small></p>
+        </div>
+        <input type="file" id="licenseFront" accept="image/*" required>
+      </div>
+      <div class="form-group">
+        <label>運転免許証（ウラ）<span class="req">必須</span></label>
+        <div class="file-upload-area" id="backArea" onclick="document.getElementById('licenseBack').click()">
+          <i class="fas fa-cloud-upload-alt upload-icon"></i>
+          <p>タップして画像を選択<br><small>予め撮影した免許証の画像をお選びください</small></p>
+        </div>
+        <input type="file" id="licenseBack" accept="image/*" required>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">
+      <i class="fas fa-paper-plane"></i>
+      申請を送信する
+    </button>
+  </form>
+
+  <div class="spinner" id="spinner">
+    <div></div>
+    <div class="spinner-text">送信中です...</div>
+  </div>
+
+  <div class="result-message" id="resultMessage">
+    <div class="result-icon"><i class="fas fa-check-circle"></i></div>
+    <h2>送信完了</h2>
+    <p id="resultText"></p>
+    <button class="again-btn" onclick="resetForm()">
+      <i class="fas fa-plus-circle"></i>
+      続けて別の運転者を申請する
+    </button>
+    <a href="https://jbrentacar.github.io/home/" class="home-link">
+      <i class="fas fa-arrow-left"></i> トップページに戻る
+    </a>
+  </div>
+</main>
+
+<footer>&copy; JBレンタカー石巻店</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAsjuxTQRPx7LoaIcFsu0mYF_3PR9NKkEc",
+  authDomain: "jb-rentacar.firebaseapp.com",
+  projectId: "jb-rentacar",
+  storageBucket: "jb-rentacar.firebasestorage.app",
+  messagingSenderId: "260306920043",
+  appId: "1:260306920043:web:c0742d3fc0c585cc55872e"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+/* ファイル選択プレビュー */
+document.getElementById('licenseFront').addEventListener('change', function(){
+  if (this.files.length>0) showPreview(document.getElementById('frontArea'), this.files[0]);
+});
+document.getElementById('licenseBack').addEventListener('change', function(){
+  if (this.files.length>0) showPreview(document.getElementById('backArea'), this.files[0]);
+});
+setupDragDrop('frontArea','licenseFront');
+setupDragDrop('backArea','licenseBack');
+
+function setupDragDrop(areaId, inputId){
+  const area=document.getElementById(areaId), input=document.getElementById(inputId);
+  ['dragenter','dragover'].forEach(evt=>area.addEventListener(evt,e=>{e.preventDefault();area.style.borderColor='#0068e9';}));
+  ['dragleave','drop'].forEach(evt=>area.addEventListener(evt,e=>{e.preventDefault();area.style.borderColor='#ccc';}));
+  area.addEventListener('drop',e=>{ if(e.dataTransfer.files.length>0){ input.files=e.dataTransfer.files; showPreview(area,e.dataTransfer.files[0]); } });
+}
+function showPreview(area,file){
+  area.classList.add('has-file');
+  const reader=new FileReader();
+  reader.onload=e=>{ area.innerHTML='<span class="file-name"><i class="fas fa-check-circle"></i> '+file.name+'</span><br><img class="preview" src="'+e.target.result+'">'; };
+  reader.readAsDataURL(file);
+}
+
+/* 画像圧縮（長辺1600px・JPEG0.8）→ Blobを返す */
+function compressImage(file, maxSize, quality){
+  return new Promise(resolve=>{
+    const img=new Image();
+    const url=URL.createObjectURL(file);
+    img.onload=()=>{
+      let w=img.width, h=img.height;
+      if (w>maxSize||h>maxSize){ if(w>h){h=Math.round(h*maxSize/w);w=maxSize;} else {w=Math.round(w*maxSize/h);h=maxSize;} }
+      const canvas=document.createElement('canvas');
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      canvas.toBlob(blob=>{ URL.revokeObjectURL(url); resolve(blob); }, 'image/jpeg', quality);
+    };
+    img.src=url;
+  });
+}
+
+/* 送信 */
+document.getElementById('applicationForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const btn=document.getElementById('submitBtn');
+  const spinner=document.getElementById('spinner');
+  const resultMsg=document.getElementById('resultMessage');
+  const frontFile=document.getElementById('licenseFront').files[0];
+  const backFile=document.getElementById('licenseBack').files[0];
+  if(!frontFile||!backFile){ alert('運転免許証の画像（表・ウラ）を選択してください。'); return; }
+
+  btn.disabled=true; btn.style.display='none';
+  spinner.style.display='block'; resultMsg.style.display='none';
+
+  try {
+    const contractorName=document.getElementById('contractorName').value.trim();
+    const driverName=document.getElementById('driverName').value.trim();
+    const driverPhone=document.getElementById('driverPhone').value.trim();
+    const driverAddress=document.getElementById('driverAddress').value.trim();
+
+    const frontBlob=await compressImage(frontFile,1600,0.8);
+    const backBlob=await compressImage(backFile,1600,0.8);
+
+    const prefix=Date.now()+'_'+Math.random().toString(36).slice(2,8);
+    const frontRef=ref(storage,`licenses/${prefix}_front.jpg`);
+    const backRef=ref(storage,`licenses/${prefix}_back.jpg`);
+
+    await uploadBytes(frontRef, frontBlob, { contentType:'image/jpeg' });
+    await uploadBytes(backRef, backBlob, { contentType:'image/jpeg' });
+
+    const frontUrl=await getDownloadURL(frontRef);
+    const backUrl=await getDownloadURL(backRef);
+
+    await addDoc(collection(db,'rentacar','driverApplications','items'), {
+      "契約者名": contractorName,
+      "運転者名": driverName,
+      "運転者電話番号": driverPhone,
+      "運転者住所": driverAddress,
+      "免許証表URL": frontUrl,
+      "免許証裏URL": backUrl,
+      "対応状況": "未対応",
+      "受付日時": serverTimestamp()
+    });
+
+    spinner.style.display='none';
+    document.getElementById('applicationForm').style.display='none';
+    document.querySelector('.notice-card').style.display='none';
+    resultMsg.className='result-message success';
+    document.getElementById('resultText').textContent=driverName+' 様の運転者申請が完了しました。';
+    resultMsg.style.display='block';
+    sessionStorage.setItem('contractorName', contractorName);
+  } catch(err){
+    showError(err.message);
+  }
+});
+
+function showError(msg){
+  const spinner=document.getElementById('spinner');
+  const resultMsg=document.getElementById('resultMessage');
+  spinner.style.display='none';
+  resultMsg.className='result-message error';
+  resultMsg.innerHTML='<div class="result-icon"><i class="fas fa-times-circle"></i></div>'+
+    '<h2>送信エラー</h2><p>'+msg+'</p>'+
+    '<button class="again-btn" onclick="location.reload()" style="background:linear-gradient(135deg,#e74c3c,#c0392b);"><i class="fas fa-redo"></i> 戻ってやり直す</button>';
+  resultMsg.style.display='block';
+  document.getElementById('applicationForm').style.display='none';
+}
+
+/* 続けて別の運転者を申請（契約者名は保持） */
+window.resetForm=function(){
+  const savedName=sessionStorage.getItem('contractorName')||'';
+  document.getElementById('driverName').value='';
+  document.getElementById('driverPhone').value='';
+  document.getElementById('driverAddress').value='';
+  document.getElementById('licenseFront').value='';
+  document.getElementById('licenseBack').value='';
+  document.getElementById('contractorName').value=savedName;
+  document.getElementById('frontArea').classList.remove('has-file');
+  document.getElementById('frontArea').innerHTML='<i class="fas fa-cloud-upload-alt upload-icon"></i><p>タップして画像を選択<br><small>予め撮影した免許証の画像をお選びください</small></p>';
+  document.getElementById('backArea').classList.remove('has-file');
+  document.getElementById('backArea').innerHTML='<i class="fas fa-cloud-upload-alt upload-icon"></i><p>タップして画像を選択<br><small>予め撮影した免許証の画像をお選びください</small></p>';
+  document.getElementById('resultMessage').style.display='none';
+  document.querySelector('.notice-card').style.display='block';
+  const form=document.getElementById('applicationForm');
+  form.style.display='block';
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=false; btn.style.display='flex';
+  document.getElementById('driverName').focus();
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+</script>
+
 </body>
 </html>
