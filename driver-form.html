@@ -232,6 +232,23 @@ document.getElementById('applicationForm').addEventListener('submit', async func
       "受付日時": serverTimestamp()
     });
 
+        // ssgform へ通知送信（本体保存とは独立。失敗しても本体は止めない）
+    try {
+      const ssgData = new FormData();
+      ssgData.append("ご契約者名", contractorName);
+      ssgData.append("運転者名", driverName);
+      ssgData.append("運転者電話番号", driverPhone);
+      ssgData.append("運転者住所", driverAddress);
+      await fetch("https://ssgform.com/s/sRQIv0YeO3pA", {
+        method: "POST",
+        mode: "no-cors",
+        body: ssgData
+      });
+    } catch(ssgErr) {
+      console.error("ssgform通知エラー:", ssgErr);
+    }
+
+
 
     spinner.style.display='none';
     document.getElementById('applicationForm').style.display='none';
