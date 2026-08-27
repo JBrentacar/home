@@ -359,7 +359,7 @@
         const overKm     = drivenKm - allowedKm;
         const extraFee   = overKm > 0 ? overKm * 10 : 0;
         const oilNeeded  = rentalDays > 90 || drivenKm >= 3000;
-        const oilFee     = vehicleType === '軽自動車' ? 4000 : 6000;
+        const oilFee     = vehicleType === '軽自動車' ? 5500 : 7700;
 
         document.getElementById('r-days').textContent   = `${rentalDays} 日間`;
         document.getElementById('r-driven').textContent = `${drivenKm.toLocaleString()} ㎞`;
